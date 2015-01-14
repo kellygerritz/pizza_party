@@ -26,7 +26,9 @@ namespace Complexity.Objects {
         /// <param name="args"></param>
         public Cube(string[] args) {
             Init();
-            //Process any arguments
+
+            //Process arguments
+
         }
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace Complexity.Objects {
             base.Init();
 
             //Vertex colors
+            //r, g, b, a
             col = new MatrixD(8, 4, new Double[] {
                 0.0, 1.0, 0.0, 1.0,
 			    0.0, 1.0, 0.0, 1.0,
@@ -48,15 +51,16 @@ namespace Complexity.Objects {
             });
 
             //Vertex positions in 3D space
-            geo = new MatrixD(8, 3, new Double[] {
-                -0.5,  0.5,  0.5, // vertex[0]
-			    0.5,  0.5,  0.5, // vertex[1]
-		        0.5, -0.5,  0.5, // vertex[2]
-		        -0.5, -0.5,  0.5, // vertex[3]
-			    -0.5,  0.5, -0.5, // vertex[4]
-			    0.5,  0.5, -0.5, // vertex[5]
-			    0.5, -0.5, -0.5, // vertex[6]
-			    -0.5, -0.5, -0.5 // vertex[7]
+            //x, y, z
+            geo = MatrixD.OfArray(new Double[,] {
+                {-0.5,  0.5,  0.5}, // vertex[0]
+			    {0.5,  0.5,  0.5}, // vertex[1]
+		        {0.5, -0.5,  0.5}, // vertex[2]
+		        {-0.5, -0.5,  0.5}, // vertex[3]
+			    {-0.5,  0.5, -0.5}, // vertex[4]
+			    {0.5,  0.5, -0.5}, // vertex[5]
+			    {0.5, -0.5, -0.5}, // vertex[6]
+			    {-0.5, -0.5, -0.5} // vertex[7]
             }).Transpose();
 
             triangles = new byte[] {

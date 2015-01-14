@@ -33,6 +33,16 @@ namespace Complexity.Util {
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static MatrixD OfArray(Double[,] data) {
+            Matrix<double> _data = DenseMatrix.OfArray(data);
+            return new MatrixD(_data.RowCount, _data.ColumnCount, _data.ToColumnWiseArray());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="z"></param>
@@ -94,13 +104,8 @@ namespace Complexity.Util {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="rows"></param>
-        /// <param name="columns"></param>
+        /// <param name="d"></param>
         /// <returns></returns>
-        public static MatrixD Build(int rows, int columns) {
-            return new MatrixD(rows, columns);
-        }
-
         private static MatrixD ConvertMatrix(DenseMatrix d) {
             return new MatrixD(d.RowCount, d.ColumnCount, d.ToColumnWiseArray());
         }

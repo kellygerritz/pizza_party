@@ -18,7 +18,7 @@ namespace Complexity.Objects {
         protected double[] geometry, colors;
 
         //These store the original values and should not be modified
-        private VectorD rot, trans;
+        protected VectorD rot, trans;
         protected MatrixD geo, col;
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Complexity.Objects {
         /// This probably needs to be improved
         /// </summary>
         public void Recalculate() {
-            MatrixD _geo = MatrixD.Build(geo.RowCount, geo.ColumnCount);
+            MatrixD _geo = new MatrixD(geo.RowCount, geo.ColumnCount);
 
             //Transform geometry matrix
             _geo = MatrixD.RotateMatrix(Global.GetTime(), Global.GetTime(), Global.GetTime(), geo);
