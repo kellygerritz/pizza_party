@@ -6,44 +6,57 @@ using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using MathNet.Numerics.LinearAlgebra.Double;
+using Complexity.Util;
 
 namespace Complexity.Objects {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Cube : Object3 {
+        /// <summary>
+        /// 
+        /// </summary>
         public Cube() {
             Init();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public Cube(string[] args) {
             Init();
             //Process any arguments
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected void Init() {
             base.Init();
 
             //Vertex colors
-            col = DenseMatrix.OfArray(new Double[,] {
-                {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0},
-			    {0.0, 1.0, 0.0, 1.0}
+            col = new MatrixD(8, 4, new Double[] {
+                0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0
             });
 
             //Vertex positions in 3D space
-            geo = DenseMatrix.OfArray(new Double[,] {
-                {-0.5,  0.5,  0.5}, // vertex[0]
-			    {0.5,  0.5,  0.5}, // vertex[1]
-		        {0.5, -0.5,  0.5}, // vertex[2]
-		        {-0.5, -0.5,  0.5}, // vertex[3]
-			    {-0.5,  0.5, -0.5}, // vertex[4]
-			    {0.5,  0.5, -0.5}, // vertex[5]
-			    {0.5, -0.5, -0.5}, // vertex[6]
-			    {-0.5, -0.5, -0.5} // vertex[7]
+            geo = new MatrixD(8, 3, new Double[] {
+                -0.5,  0.5,  0.5, // vertex[0]
+			    0.5,  0.5,  0.5, // vertex[1]
+		        0.5, -0.5,  0.5, // vertex[2]
+		        -0.5, -0.5,  0.5, // vertex[3]
+			    -0.5,  0.5, -0.5, // vertex[4]
+			    0.5,  0.5, -0.5, // vertex[5]
+			    0.5, -0.5, -0.5, // vertex[6]
+			    -0.5, -0.5, -0.5 // vertex[7]
             }).Transpose();
 
             triangles = new byte[] {

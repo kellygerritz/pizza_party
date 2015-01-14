@@ -7,8 +7,38 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Complexity.Util {
-    class MathUtil {
-        public static Matrix<double> RotateMatrix3(double x, double y, double z, Matrix<double> A) {
+    /// <summary>
+    /// This is a wrapper class
+    /// </summary>
+    public class MatrixD : DenseMatrix {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="c"></param>
+        public MatrixD(int r, int c)
+            : base(r, c) {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="columns"></param>
+        /// <param name="data"></param>
+        public MatrixD(int rows, int columns, Double[] data)
+            : base(rows, columns, data) {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public static MatrixD RotateMatrix(double x, double y, double z, MatrixD A) {
             //Prepare rotational matricies
             Matrix<double> rotX = DenseMatrix.OfArray(new Double[,] {
                 {1, 0, 0},
@@ -27,20 +57,89 @@ namespace Complexity.Util {
                 {Math.Sin(z), Math.Cos(z), 0},
                 {0, 0, 1}
             });
-            
+
             //Rotate
-            Matrix<double> result = rotX * rotY * rotZ * A;
+            MatrixD result = ConvertMatrix((DenseMatrix) (rotX * rotY * rotZ * A));
             return result;
         }
 
-        public static Matrix<double> TranslateMatrix3(double x, double y, double z, Matrix<double> A) {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public static MatrixD TranslateMatrix(double x, double y, double z, MatrixD A) {
             //Prepare translation matrix
             Matrix<double> trans = Matrix<double>.Build.Dense(A.RowCount, A.ColumnCount, 0);
             trans.SetRow(0, Vector<double>.Build.Dense(A.ColumnCount, x));
             trans.SetRow(1, Vector<double>.Build.Dense(A.ColumnCount, y));
             trans.SetRow(2, Vector<double>.Build.Dense(A.ColumnCount, z));
 
-            return trans + A;
+            return ConvertMatrix((DenseMatrix) trans + A);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public static MatrixD Add(MatrixD A, MatrixD B) {
+            return (MatrixD) (((Matrix<double>) A)+((Matrix<double>) B));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public static MatrixD Build(int rows, int columns) {
+            return new MatrixD(rows, columns);
+        }
+
+        private static MatrixD ConvertMatrix(DenseMatrix d) {
+            return new MatrixD(d.RowCount, d.ColumnCount, d.ToColumnWiseArray());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public MatrixD Transpose() {
+            Matrix<double> _this = ((Matrix<double>) this).Transpose();
+            return new MatrixD(_this.RowCount, _this.ColumnCount, _this.ToColumnWiseArray());
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class VectorD : DenseVector {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="size"></param>
+        public VectorD(int size)
+            : base(size) {
+
+        }
+
+        public VectorD(double[] data)
+            : base(data) {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <returns></returns>
+        public static VectorD OfArray(Double[] vec) {
+            return new VectorD(vec);
         }
     }
 }

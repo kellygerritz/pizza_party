@@ -7,14 +7,23 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Complexity {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Global {
         private static Stopwatch time = new Stopwatch();
 
-        //Returns time elapsed in seconds
+        /// <summary>
+        /// Returns time elapsed in seconds
+        /// </summary>
+        /// <returns></returns>
         public static double GetTime() {
             return time.ElapsedMilliseconds / 1000.0;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public static void Begin() {
             time.Start();
         }

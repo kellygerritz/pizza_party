@@ -8,16 +8,27 @@ using Complexity.Objects;
 using System.Collections;
 
 namespace Complexity {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Scene : GameWindow {
         Matrix4 matrixProjection, matrixModelview;
         private ArrayList objects;
         float cameraRotation = 0f;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public Scene(string[] args) : base(800, 600, new GraphicsMode(32,24,0,8), "Complexity"){
             objects = new ArrayList();
             objects.Add(new Cube(null));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnLoad(EventArgs e) {
             GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.DepthTest);
@@ -26,6 +37,10 @@ namespace Complexity {
             GL.EnableClientState(EnableCap.ColorArray);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnResize(EventArgs e) {
             GL.Viewport(0, 0, Width, Height);
             matrixProjection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 1f, 100f);
@@ -33,6 +48,10 @@ namespace Complexity {
             GL.LoadMatrix(ref matrixProjection);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnRenderFrame(FrameEventArgs e) {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
