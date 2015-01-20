@@ -37,21 +37,6 @@ namespace Complexity.Objects {
         protected void Init() {
             base.Init();
 
-            //Vertex colors
-            //r, g, b, a
-            col = new MatrixD(8, 4, new Double[] {
-                0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0
-            });
-
-            //Vertex positions in 3D space
-            //x, y, z
             geo = MatrixD.OfArray(new Double[,] {
                 {-0.5,  0.5,  0.5}, // vertex[0]
 			    {0.5,  0.5,  0.5}, // vertex[1]
@@ -62,6 +47,17 @@ namespace Complexity.Objects {
 			    {0.5, -0.5, -0.5}, // vertex[6]
 			    {-0.5, -0.5, -0.5} // vertex[7]
             }).Transpose();
+
+            col = new MatrixD(8, 4, new Double[] {
+                0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0,
+			    0.0, 1.0, 0.0, 1.0
+            });
 
             triangles = new byte[] {
                 1, 0, 2, // front
@@ -78,27 +74,7 @@ namespace Complexity.Objects {
 			    3, 7, 6
             };
 
-            colors = new Double[] {
-                0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0,
-			    0.0, 1.0, 0.0, 1.0
-            };
-
-            geometry = new Double[] {
-                -0.5,  0.5,  0.5, // vertex[0]
-			    0.5,  0.5,  0.5, // vertex[1]
-		        0.5, -0.5,  0.5, // vertex[2]
-		        -0.5, -0.5,  0.5, // vertex[3]
-			    -0.5,  0.5, -0.5, // vertex[4]
-			    0.5,  0.5, -0.5, // vertex[5]
-			    0.5, -0.5, -0.5, // vertex[6]
-			    -0.5, -0.5, -0.5 // vertex[7]
-            };
+            Recalculate();
         }
     }
 }

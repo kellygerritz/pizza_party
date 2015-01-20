@@ -1,12 +1,15 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Symbolics;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Complexity.Util {
+
     /// <summary>
     /// This is a wrapper class
     /// </summary>
@@ -94,6 +97,16 @@ namespace Complexity.Util {
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public static MatrixD TranslateMatrix(VectorD vec, MatrixD A) {
+            return TranslateMatrix(vec.At(0), vec.At(1), vec.At(2), A);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="A"></param>
         /// <param name="B"></param>
         /// <returns></returns>
@@ -117,6 +130,15 @@ namespace Complexity.Util {
         public MatrixD Transpose() {
             Matrix<double> _this = ((Matrix<double>) this).Transpose();
             return new MatrixD(_this.RowCount, _this.ColumnCount, _this.ToColumnWiseArray());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public VectorD Column(int index) {
+            return new VectorD(base.Column(index).ToArray()); 
         }
     }
 

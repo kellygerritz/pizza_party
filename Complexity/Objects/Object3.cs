@@ -12,21 +12,43 @@ namespace Complexity.Objects {
     /// <summary>
     /// Represent a 3 Dimentional Object that can be rendered
     /// </summary>
-    public abstract class Object3 {
-        //These get rewitten for drawing.
-        protected byte[] triangles;
-        protected double[] geometry, colors;
+    public abstract class Object3 : ICloneable {
+        protected double[] geometry;
+        protected double[] colors;
 
-        //These store the original values and should not be modified
-        protected VectorD rot, trans;
+        //These get rewitten for drawing and calculations.
+        protected VectorD rot, trans, origin;
+        
+        //These store the original values, everything is calculated from these
         protected MatrixD geo, col;
+        protected byte[] triangles;
+
+        public Object3() {
+            Init();
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        protected void Init() {
+        protected virtual void Init() {
+            geometry = new double[] { 0, 0, 0 };
+            colors = new double[] { 0, 0, 0 };
+            triangles = new byte[] { 0, 0, 0 };
+
+            geo = MatrixD.OfArray(new Double[,] {
+                {0, 0, 0}
+            });
+
+            col = MatrixD.OfArray(new Double[,] {
+                {0, 0, 0}
+            });
+
+            origin = VectorD.OfArray(new Double[] {
+                0, 0, 0
+            });
+
             rot = VectorD.OfArray(new Double[] {
-                1, 0, 0
+                0, 0, 0
             });
 
             trans = VectorD.OfArray(new Double[] {
@@ -34,16 +56,25 @@ namespace Complexity.Objects {
             });
         }
 
+        public void SetTranslation(VectorD vec) {
+            trans = vec;
+        }
+
         /// <summary>
         /// This method is in charge of perfomring all the logic & calculations
         /// This probably needs to be improved
         /// </summary>
-        public void Recalculate() {
+        public virtual void Recalculate() {
             MatrixD _geo = new MatrixD(geo.RowCount, geo.ColumnCount);
 
             //Transform geometry matrix
-            _geo = MatrixD.RotateMatrix(Global.GetTime(), Global.GetTime(), Global.GetTime(), geo);
-            _geo = MatrixD.TranslateMatrix(Math.Sin(Global.GetTime()), 0, 0, _geo);
+            _geo = MatrixD.TranslateMatrix(origin, geo);
+            _geo = MatrixD.RotateMatrix(0, 0, 0, _geo);
+
+            _geo = MatrixD.TranslateMatrix(trans, _geo);
+
+            //Transform color matrix
+            colors = col.ToColumnWiseArray();
 
             geometry = _geo.ToColumnWiseArray();
         }
@@ -51,15 +82,20 @@ namespace Complexity.Objects {
         /// <summary>
         /// 
         /// </summary>
-        public void Draw() {
-            //Fix, this needs to be moved else where. Logic aand rendeirng need to be completely separate
-            Recalculate();
+        /// <returns>a shallow copy of this object</returns>
+        public Object Clone() {
+            return this.MemberwiseClone();
+        }
 
-            //Draw
-            GL.VertexPointer(3, VertexPointerType.Double, 0, geometry);
-            GL.ColorPointer(4, ColorPointerType.Double, 0, colors);
-            GL.Material(MaterialFace.FrontAndBack, MaterialParameter.Ambient, new Color4(255    , 0, 0, 255));
-            GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void Draw() {
+                GL.VertexPointer(3, VertexPointerType.Double, 0, geometry);
+                GL.ColorPointer(4, ColorPointerType.Double, 0, colors);
+                GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
+
+                //Recalculate();
         }
     }
 }
