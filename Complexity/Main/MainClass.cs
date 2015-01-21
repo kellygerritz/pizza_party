@@ -35,14 +35,18 @@ namespace Complexity {
             //Create all the things
             Console.Write("Creating objects... ");
             Cube cube = new Cube( new Dictionary<string, string>() {
-                    {"rotation", "time"}
+                    {"yrotation", "time"},
+                    {"scale", "1/2"}
                 });
 
             System3 sys = new System3(
-                new Double[] {
-                    1,  0,  0,
-                    -1, 0,  0 },
-                cube
+                new Double[,] {
+                    {   1,  0,  0  },
+                    {   -1, 0,  0  }},
+                cube,
+                new Dictionary<string, string> {
+                    {"zrotation", "time"}
+                }
             );
 
             scene = new Scene(null);

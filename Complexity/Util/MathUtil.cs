@@ -88,6 +88,18 @@ namespace Complexity.Util {
         }
 
         /// <summary>
+        /// Returns the result of multiplying matrix A by scale
+        /// </summary>
+        /// <param name="scale"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public static MatrixD ScaleMatrix(double scale, MatrixD A) {
+            Matrix<double> result = DenseMatrix.OfArray(A.ToArray());
+            result *= scale;
+            return MatrixD.OfArray(result.ToArray());
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="x"></param>
@@ -215,6 +227,15 @@ namespace Complexity.Util {
         /// <returns></returns>
         public double ValueAt(int index) {
             return values.At(index);
+        }
+
+        /// <summary>
+        /// Sets the expression at the given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="expr"></param>
+        public void setExprAt(int index, string expr) {
+            expressions[index] = new ExpressionD(expr);
         }
     }
 }

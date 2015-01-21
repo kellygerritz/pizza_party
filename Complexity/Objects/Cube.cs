@@ -79,7 +79,6 @@ namespace Complexity.Objects {
 
         public override void Recalculate() {
             base.Recalculate();
-            Console.WriteLine(rot.ValueAt(0) + ", " + rot.ValueAt(1) + ", " + rot.ValueAt(1));
         }
 
         public override void Draw() {

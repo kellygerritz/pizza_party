@@ -21,7 +21,9 @@ namespace Complexity.Objects {
         //trans = how it moves
         //origin = center of the object
         //position = where the origin is
-        protected VectorExpr rot, trans, origin, position;
+        protected VectorExpr rot, trans, origin;
+        protected double[] position;
+        protected ExpressionD scale;
 
         //These store the original values, everything is calculated from these
         protected MatrixD geo, col;
@@ -37,21 +39,37 @@ namespace Complexity.Objects {
         public Object3(Dictionary<string, string> args) {
             Init();
 
+            //Process Arguments
+            #region Set Rotational Values
             //Process arguments
             if (args.ContainsKey("rotation")) {
                 rot = new VectorExpr(new string[] {
                 args["rotation"], args["rotation"], args["rotation"] });
             }
+
+            if (args.ContainsKey("xrotation")) {
+                rot.setExprAt(0, args["xrotation"]);
+            }
+
+            if (args.ContainsKey("yrotation")) {
+                rot.setExprAt(1, args["yrotation"]);
+            }
+
+            if (args.ContainsKey("zrotation")) {
+                rot.setExprAt(2, args["zrotation"]);
+            }
+            #endregion
+
+            if (args.ContainsKey("scale")) {
+                scale = new ExpressionD(args["scale"]);
+            }
+
         }
 
         /// <summary>
         /// 
         /// </summary>
         protected virtual void Init() {
-            geometry = new double[] { 0, 0, 0 };
-            colors = new double[] { 0, 0, 0 };
-            triangles = new byte[] { 0, 0, 0 };
-
             geo = MatrixD.OfArray(new Double[,] {
                 {0, 0, 0}
             }).Transpose();
@@ -60,10 +78,14 @@ namespace Complexity.Objects {
                 {0, 0, 0, 0}
             }).Transpose();
 
+            geometry = new double[] { 0, 0, 0 };
+            colors = new double[] { 0, 0, 0 };
+            triangles = new byte[] { 0, 0, 0 };
             origin = new VectorExpr(new string[] { "0", "0", "0" });
-            position = new VectorExpr(new string[] { "0", "0", "0" });
+            position = new double[] { 0, 0, 0 };
             rot = new VectorExpr(new string[] { "0", "0", "0" });
             trans = new VectorExpr(new string[] { "0", "0", "0" });
+            scale = new ExpressionD("1");
         }
 
         /// <summary>
@@ -86,7 +108,10 @@ namespace Complexity.Objects {
         /// 
         /// </summary>
         /// <param name="position"></param>
-        public void setPosition(VectorExpr position) {
+        public void setPosition(double[] position) {
+            if (position.Length != 3) {
+                throw new Exception("Invalid number of elements in position array, need exactly 3.");
+            }
             this.position = position;
         }
 
@@ -99,13 +124,13 @@ namespace Complexity.Objects {
             rot.Recalculate();
             trans.Recalculate();
             origin.Recalculate();
-            position.Recalculate();
 
             //Transform geometry matrix
             MatrixD _geo = new MatrixD(geo.RowCount, geo.ColumnCount);
             _geo = MatrixD.TranslateMatrix(origin.values, geo);
+            _geo = MatrixD.ScaleMatrix(scale.Eval(), _geo);
             _geo = MatrixD.RotateMatrix(rot.values, _geo);
-            _geo = MatrixD.TranslateMatrix(position.values, _geo);
+            _geo = MatrixD.TranslateMatrix(position[0], position[1], position[2], _geo);
             _geo = MatrixD.TranslateMatrix(trans.values, _geo);
 
             //Transform color matrix

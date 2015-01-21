@@ -16,7 +16,7 @@ namespace Complexity.Util {
         private static ArrayList expressions = new ArrayList();
         private static ArrayList symbols;
         private static Dictionary<string, FloatingPoint> symbolValues;
-        
+
         static ExpressionD() {
             //Populate symbols with some values
             symbols = new ArrayList();

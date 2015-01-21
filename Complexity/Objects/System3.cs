@@ -19,19 +19,21 @@ namespace Complexity.Objects {
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="masterObj"></param>
-        public System3(double[] geometry, Object3 masterObj) {
+        public System3(double[,] geometry, Object3 masterObj, Dictionary<string, string> args)
+            : base(args) {
+
             this.masterObj = masterObj;
+            geo = MatrixD.OfArray(geometry).Transpose();
             cloneObjs = new ArrayList(geometry.Length / 3);
 
             //Populate clone array
             Object3 cloneObj;
-            for (int i = 0; i < geometry.Length; i += 3) {
-                cloneObj = (Object3) masterObj.Clone();
-                cloneObj.setPosition(new VectorExpr(new string[] {
-                    "" + geometry[i], "" + geometry[i + 1], "" + geometry[i + 2] }));
-
+            for (int i = 0; i < geometry.GetLength(0); i++) {
+                cloneObj = (Object3)masterObj.Clone();
                 cloneObjs.Add(cloneObj);
             }
+
+            Recalculate();
         }
 
         /// <summary>
@@ -44,6 +46,8 @@ namespace Complexity.Objects {
             foreach (Object3 obj in cloneObjs) {
                 obj.Recalculate();
             }
+
+            UpdateClones();
         }
 
         /// <summary>
@@ -52,6 +56,25 @@ namespace Complexity.Objects {
         public override void Draw() {
             foreach (Object3 obj in cloneObjs) {
                 obj.Draw();
+            }
+        }
+
+        /// <summary>
+        /// Updates all the atributes of the clones
+        /// </summary>
+        private void UpdateClones() {
+            SetClonePositions();
+        }
+
+        /// <summary>
+        /// Sets the positions of the clone objects.
+        /// Should be used after recalculating.
+        /// </summary>
+        private void SetClonePositions() {
+            int i = 0; //Keeps track of position in geometry array
+            foreach (Object3 obj in cloneObjs) {
+                obj.setPosition(new double[] { geometry[i], geometry[i + 1], geometry[i + 2] });
+                i += 3;
             }
         }
     }
