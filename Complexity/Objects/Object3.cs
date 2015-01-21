@@ -12,9 +12,9 @@ namespace Complexity.Objects {
     /// <summary>
     /// Represent a 3 Dimentional Object that can be rendered
     /// </summary>
-    public abstract class Object3 : ICloneable {
+    public abstract class Object3 {
         protected double[] geometry;
-        protected double[] colors;
+        protected double[] color;
 
         //These get rewitten for drawing and calculations.
         //rot = how it rotates
@@ -28,6 +28,9 @@ namespace Complexity.Objects {
         //These store the original values, everything is calculated from these
         protected MatrixD geo, col;
         protected byte[] triangles;
+
+        //Other values
+        protected string name;
 
         /// <summary>
         /// 
@@ -64,6 +67,10 @@ namespace Complexity.Objects {
                 scale = new ExpressionD(args["scale"]);
             }
 
+            if (args.ContainsKey("name")) {
+                name = args["name"];
+            }
+
         }
 
         /// <summary>
@@ -79,7 +86,7 @@ namespace Complexity.Objects {
             }).Transpose();
 
             geometry = new double[] { 0, 0, 0 };
-            colors = new double[] { 0, 0, 0 };
+            color = new double[] { 0, 0, 0 };
             triangles = new byte[] { 0, 0, 0 };
             origin = new VectorExpr(new string[] { "0", "0", "0" });
             position = new double[] { 0, 0, 0 };
@@ -136,7 +143,7 @@ namespace Complexity.Objects {
             //Transform color matrix
 
             //Set values
-            colors = col.ToColumnWiseArray();
+            color = col.ToColumnWiseArray();
             geometry = _geo.ToColumnWiseArray();
         }
 
@@ -144,7 +151,7 @@ namespace Complexity.Objects {
         /// 
         /// </summary>
         /// <returns>a shallow copy of this object</returns>
-        public Object Clone() {
+        public virtual Object Clone() {
             return this.MemberwiseClone();
         }
 
@@ -153,7 +160,7 @@ namespace Complexity.Objects {
         /// </summary>
         public virtual void Draw() {
             GL.VertexPointer(3, VertexPointerType.Double, 0, geometry);
-            GL.ColorPointer(4, ColorPointerType.Double, 0, colors);
+            GL.ColorPointer(4, ColorPointerType.Double, 0, color);
             GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
         }
     }

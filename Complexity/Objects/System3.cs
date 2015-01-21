@@ -41,7 +41,7 @@ namespace Complexity.Objects {
         /// </summary>
         public override void Recalculate() {
             base.Recalculate();
-            masterObj.Recalculate();
+            //masterObj.Recalculate();
 
             foreach (Object3 obj in cloneObjs) {
                 obj.Recalculate();
@@ -60,6 +60,29 @@ namespace Complexity.Objects {
         }
 
         /// <summary>
+        /// For a system, we have to perform a recursive clone
+        /// </summary>
+        /// <returns></returns>
+        public override Object Clone() {
+            ArrayList _cloneObjs = new ArrayList();
+            foreach (Object3 obj in cloneObjs) {
+                _cloneObjs.Add(obj.Clone());
+            }
+
+            System3 result = (System3) MemberwiseClone();
+            result.SetClones(_cloneObjs);
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clones"></param>
+        public void SetClones(ArrayList clones) {
+            cloneObjs = clones;
+        }
+
+        /// <summary>
         /// Updates all the atributes of the clones
         /// </summary>
         private void UpdateClones() {
@@ -73,7 +96,10 @@ namespace Complexity.Objects {
         private void SetClonePositions() {
             int i = 0; //Keeps track of position in geometry array
             foreach (Object3 obj in cloneObjs) {
-                obj.setPosition(new double[] { geometry[i], geometry[i + 1], geometry[i + 2] });
+                obj.setPosition(new double[] { 
+                    geometry[i] + position[0], 
+                    geometry[i + 1] + position[1],
+                    geometry[i + 2] + position[2]});
                 i += 3;
             }
         }
