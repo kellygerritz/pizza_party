@@ -27,13 +27,11 @@ namespace Complexity.Objects {
             Object3 cloneObj;
             for (int i = 0; i < geometry.Length; i += 3) {
                 cloneObj = (Object3) masterObj.Clone();
-                cloneObj.setPosition(VectorD.OfArray(new double[] {
-                    geometry[i], geometry[i+1], geometry[i+2]
-                }));
+                cloneObj.setPosition(new VectorExpr(new string[] {
+                    "" + geometry[i], "" + geometry[i + 1], "" + geometry[i + 2] }));
+
                 cloneObjs.Add(cloneObj);
             }
-
-            Init();
         }
 
         /// <summary>

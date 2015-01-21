@@ -16,7 +16,8 @@ namespace Complexity.Objects {
         /// <summary>
         /// 
         /// </summary>
-        public Cube() {
+        public Cube()
+            : base() {
             Init();
         }
 
@@ -24,11 +25,12 @@ namespace Complexity.Objects {
         /// 
         /// </summary>
         /// <param name="args"></param>
-        public Cube(string[] args) {
-            Init();
+        public Cube(Dictionary<string, string> args)
+            : base(args) {
 
-            //Process arguments
+            //Process cube specific args
 
+            Recalculate();
         }
 
         /// <summary>
@@ -73,8 +75,11 @@ namespace Complexity.Objects {
 			    2, 3, 6, // bottom
 			    3, 7, 6
             };
+        }
 
-            Recalculate();
+        public override void Recalculate() {
+            base.Recalculate();
+            Console.WriteLine(rot.ValueAt(0) + ", " + rot.ValueAt(1) + ", " + rot.ValueAt(1));
         }
 
         public override void Draw() {

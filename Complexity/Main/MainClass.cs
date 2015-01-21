@@ -34,11 +34,15 @@ namespace Complexity {
         static int Main(string[] args) {
             //Create all the things
             Console.Write("Creating objects... ");
+            Cube cube = new Cube( new Dictionary<string, string>() {
+                    {"rotation", "time"}
+                });
+
             System3 sys = new System3(
                 new Double[] {
                     1,  0,  0,
                     -1, 0,  0 },
-                new Cube()
+                cube
             );
 
             scene = new Scene(null);
@@ -52,16 +56,6 @@ namespace Complexity {
             Console.WriteLine(" Done.");
 
             Global.Begin();
-
-            //Expression testing
-            Console.WriteLine("\nExpression Testing");
-            ExpressionD test = new ExpressionD("sin(time)");
-
-            while (true) {
-                Console.WriteLine(test.Eval());
-                Thread.Sleep(100);
-            }
-
 
             while (true) {
                 Console.ReadLine();

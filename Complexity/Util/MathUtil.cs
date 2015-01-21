@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Complexity.Util {
 
@@ -74,6 +75,16 @@ namespace Complexity.Util {
             //Rotate
             MatrixD result = ConvertMatrix((DenseMatrix) (rotX * rotY * rotZ * A));
             return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public static MatrixD RotateMatrix(VectorD vec, MatrixD A) {
+            return RotateMatrix(vec.At(0), vec.At(1), vec.At(2), A);
         }
 
         /// <summary>
@@ -167,6 +178,43 @@ namespace Complexity.Util {
         /// <returns></returns>
         public static VectorD OfArray(Double[] vec) {
             return new VectorD(vec);
+        }
+    }
+
+    /// <summary>
+    /// A vector of ExpressionDs.
+    /// Maintains a VectorD of the most recently calculated values.
+    /// </summary>
+    public class VectorExpr {
+        public VectorD values;
+        private ExpressionD[] expressions;
+
+        public VectorExpr(string[] exprStrings) {
+            ArrayList _expressions = new ArrayList();
+            foreach (string s in exprStrings) {
+                _expressions.Add(new ExpressionD(s));
+            }
+            expressions = (ExpressionD[]) _expressions.ToArray(typeof(ExpressionD));
+            Recalculate();
+        }
+
+        /// <summary>
+        /// Recalculates the expression values and stores them in a VectorD
+        /// </summary>
+        public void Recalculate() {
+            values = new VectorD(expressions.Length);
+            for (int i = 0; i < expressions.Length; i++) {
+                values.At(i, expressions[i].Eval());
+            }
+        }
+
+        /// <summary>
+        /// Returns the value at the specified index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public double ValueAt(int index) {
+            return values.At(index);
         }
     }
 }

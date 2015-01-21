@@ -21,7 +21,7 @@ namespace Complexity.Objects {
         //trans = how it moves
         //origin = center of the object
         //position = where the origin is
-        protected VectorD rot, trans, origin, position;
+        protected VectorExpr rot, trans, origin, position;
 
         //These store the original values, everything is calculated from these
         protected MatrixD geo, col;
@@ -32,6 +32,16 @@ namespace Complexity.Objects {
         /// </summary>
         public Object3() {
             Init();
+        }
+
+        public Object3(Dictionary<string, string> args) {
+            Init();
+
+            //Process arguments
+            if (args.ContainsKey("rotation")) {
+                rot = new VectorExpr(new string[] {
+                args["rotation"], args["rotation"], args["rotation"] });
+            }
         }
 
         /// <summary>
@@ -50,28 +60,17 @@ namespace Complexity.Objects {
                 {0, 0, 0, 0}
             }).Transpose();
 
-            origin = VectorD.OfArray(new Double[] {
-                0, 0, 0
-            });
-
-            position = VectorD.OfArray(new Double[] {
-                0, 0, 0
-            });
-
-            rot = VectorD.OfArray(new Double[] {
-                0, 0, 0
-            });
-
-            trans = VectorD.OfArray(new Double[] {
-                0, 0, 0
-            });
+            origin = new VectorExpr(new string[] { "0", "0", "0" });
+            position = new VectorExpr(new string[] { "0", "0", "0" });
+            rot = new VectorExpr(new string[] { "0", "0", "0" });
+            trans = new VectorExpr(new string[] { "0", "0", "0" });
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="vec"></param>
-        public void SetTranslation(VectorD vec) {
+        public void SetTranslation(VectorExpr vec) {
             trans = vec;
         }
 
@@ -79,7 +78,7 @@ namespace Complexity.Objects {
         /// 
         /// </summary>
         /// <param name="origin"></param>
-        public void setOrigin(VectorD origin) {
+        public void setOrigin(VectorExpr origin) {
             this.origin = origin;
         }
 
@@ -87,7 +86,7 @@ namespace Complexity.Objects {
         /// 
         /// </summary>
         /// <param name="position"></param>
-        public void setPosition(VectorD position) {
+        public void setPosition(VectorExpr position) {
             this.position = position;
         }
 
@@ -96,13 +95,18 @@ namespace Complexity.Objects {
         /// This probably needs to be improved
         /// </summary>
         public virtual void Recalculate() {
-            MatrixD _geo = new MatrixD(geo.RowCount, geo.ColumnCount);
+            //Recalculate the vector values
+            rot.Recalculate();
+            trans.Recalculate();
+            origin.Recalculate();
+            position.Recalculate();
 
             //Transform geometry matrix
-            _geo = MatrixD.TranslateMatrix(origin, geo);
-            _geo = MatrixD.RotateMatrix(0, 0, 0, _geo);
-            _geo = MatrixD.TranslateMatrix(position, _geo);
-            _geo = MatrixD.TranslateMatrix(trans, _geo);
+            MatrixD _geo = new MatrixD(geo.RowCount, geo.ColumnCount);
+            _geo = MatrixD.TranslateMatrix(origin.values, geo);
+            _geo = MatrixD.RotateMatrix(rot.values, _geo);
+            _geo = MatrixD.TranslateMatrix(position.values, _geo);
+            _geo = MatrixD.TranslateMatrix(trans.values, _geo);
 
             //Transform color matrix
 
