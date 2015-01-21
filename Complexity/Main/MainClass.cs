@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Threading;
 using Complexity.Objects;
 using Complexity.Main;
+using Complexity.Util;
 
 namespace Complexity {
     /// <summary>
@@ -33,10 +34,12 @@ namespace Complexity {
         static int Main(string[] args) {
             //Create all the things
             Console.Write("Creating objects... ");
-            System3 sys = new System3(new Double[] {
-                1, 0, 0,
-                -1, 0, 0
-            }, new Cube());
+            System3 sys = new System3(
+                new Double[] {
+                    1,  0,  0,
+                    -1, 0,  0 },
+                new Cube()
+            );
 
             scene = new Scene(null);
             scene.Add(sys);
@@ -44,11 +47,21 @@ namespace Complexity {
 
             //Render Thread
             Thread thread = new Thread(new ThreadStart(RunRenderWindow));
-            Console.Write("Creating renderwindow...");
+            Console.Write("Creating renderwindow... ");
             thread.Start();
             Console.WriteLine(" Done.");
 
             Global.Begin();
+
+            //Expression testing
+            Console.WriteLine("\nExpression Testing");
+            ExpressionD test = new ExpressionD("sin(time)");
+
+            while (true) {
+                Console.WriteLine(test.Eval());
+                Thread.Sleep(100);
+            }
+
 
             while (true) {
                 Console.ReadLine();

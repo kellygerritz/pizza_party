@@ -17,7 +17,7 @@ namespace Complexity {
         /// Returns time elapsed in seconds
         /// </summary>
         /// <returns></returns>
-        public static double GetTime() {
+        public static double GetElapsedTime() {
             return time.ElapsedMilliseconds / 1000.0;
         }
 

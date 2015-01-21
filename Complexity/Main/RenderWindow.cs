@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Complexity.Objects;
+using Complexity.Util;
 
 namespace Complexity.Main {
     /// <summary>
@@ -72,6 +73,7 @@ namespace Complexity.Main {
             //That could be done on a separate thread, then, when that's over
             //we can swap buffers after rendering
             renderScene.Recalculate();
+            ExpressionD.Recalculate();
 
             SwapBuffers();
         }
