@@ -18,6 +18,10 @@ namespace Complexity.Main {
         private Matrix4 matrixProjection, matrixModelview;
         private Scene renderScene;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="scene"></param>
         public RenderWindow(Scene scene)
             : base(800, 600, new GraphicsMode(32, 24, 0, 8), "Complexity") {
                 renderScene = scene;
@@ -62,6 +66,12 @@ namespace Complexity.Main {
 
             //Draw the scene
             renderScene.Draw();
+
+            //Recalculate
+            //This should be modified so that everything is calculated to a buffer
+            //That could be done on a separate thread, then, when that's over
+            //we can swap buffers after rendering
+            renderScene.Recalculate();
 
             SwapBuffers();
         }

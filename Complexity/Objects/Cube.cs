@@ -34,7 +34,7 @@ namespace Complexity.Objects {
         /// <summary>
         /// 
         /// </summary>
-        protected void Init() {
+        protected override void Init() {
             base.Init();
 
             geo = MatrixD.OfArray(new Double[,] {
@@ -75,6 +75,10 @@ namespace Complexity.Objects {
             };
 
             Recalculate();
+        }
+
+        public override void Draw() {
+            base.Draw();
         }
     }
 }
