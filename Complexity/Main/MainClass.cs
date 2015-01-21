@@ -36,7 +36,11 @@ namespace Complexity {
             Console.Write("Creating objects... ");
             Cube cube = new Cube( new Dictionary<string, string>() {
                     {"scale", "1/5"},
-                    {"name", "cube"}
+                    {"name", "cube"},
+                    {"rcolor", "1"},
+                    {"gcolor", "0"},
+                    {"bcolor", "1"},
+                    {"acolor", "0"}
                 });
 
             System3 sys = new System3(
@@ -58,7 +62,7 @@ namespace Complexity {
                 new Dictionary<string, string> {
                     {"name", "sys2"},
                     {"scale", "sin(time)"},
-                    {"zrotation", "time"}
+                    {"zrotation", "time/5"}
                 }
             );
 

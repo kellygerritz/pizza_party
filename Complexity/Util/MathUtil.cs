@@ -124,7 +124,11 @@ namespace Complexity.Util {
         /// <param name="A"></param>
         /// <returns></returns>
         public static MatrixD TranslateMatrix(VectorD vec, MatrixD A) {
-            return TranslateMatrix(vec.At(0), vec.At(1), vec.At(2), A);
+            Matrix<double> trans = Matrix<double>.Build.Dense(A.RowCount, A.ColumnCount, 0);
+            for (int i = 0; i < vec.Count; i++) {
+                trans.SetRow(i, Vector<double>.Build.Dense(A.ColumnCount, vec.At(i)));
+            }
+            return ConvertMatrix((DenseMatrix) trans + A);
         }
 
         /// <summary>
@@ -162,6 +166,15 @@ namespace Complexity.Util {
         /// <returns></returns>
         public VectorD Column(int index) {
             return new VectorD(base.Column(index).ToArray()); 
+        }
+
+        /// <summary>
+        /// Sets the all the values in a row to a number
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="num"></param>
+        public void SetRow(int row, double num) {
+            base.SetRow(row, Vector<double>.Build.Dense(ColumnCount, num));
         }
     }
 
