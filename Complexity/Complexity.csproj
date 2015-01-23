@@ -37,8 +37,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main\RenderWindow.cs" />
+    <Compile Include="Main\Universe.cs" />
+    <Compile Include="Objects\SimpleDot3.cs" />
+    <Compile Include="Objects\SimpleObject3.cs" />
+    <Compile Include="Objects\ComplexObject3.cs" />
+    <Compile Include="Objects\Renderable.cs" />
     <Compile Include="Objects\System3.cs" />
     <Compile Include="Util\ExpressionD.cs" />
+    <Compile Include="Util\GeometryBuilder.cs" />
     <Compile Include="Util\Global.cs" />
     <Compile Include="Main\MainClass.cs" />
     <Compile Include="Objects\Cube.cs" />

@@ -12,22 +12,21 @@ namespace Complexity.Objects {
     /// <summary>
     /// Represent a 3 Dimentional Object that can be rendered
     /// </summary>
-    public abstract class Object3 {
+    public abstract class Object3 : Renderable {
         protected double[] geometry;
-        protected double[] color;
+        protected double[] vertexColor;
 
         //These get rewitten for drawing and calculations.
         //rot = how it rotates
         //trans = how it moves
         //origin = center of the object
         //position = where the origin is
-        protected VectorExpr rot, trans, origin, colors;
+        protected VectorExpr rot, trans, origin, color;
         protected double[] position;
         protected ExpressionD scale;
 
         //These store the original values, everything is calculated from these
-        protected MatrixD geo, col;
-        protected byte[] triangles;
+        protected MatrixD geo;
 
         //Other values
         protected string name;
@@ -65,25 +64,25 @@ namespace Complexity.Objects {
 
             #region Set Color Values
             if (args.ContainsKey("color")) {
-                colors = new VectorExpr(new string[] {
+                color = new VectorExpr(new string[] {
                     args["color"], args["color"], args["color"], args["color"]
                 });
             }
 
             if (args.ContainsKey("rcolor")) {
-                colors.setExprAt(0, args["rcolor"]);
+                color.setExprAt(0, args["rcolor"]);
             }
 
             if (args.ContainsKey("gcolor")) {
-                colors.setExprAt(1, args["gcolor"]);
+                color.setExprAt(1, args["gcolor"]);
             }
 
             if (args.ContainsKey("bcolor")) {
-                colors.setExprAt(2, args["bcolor"]);
+                color.setExprAt(2, args["bcolor"]);
             }
 
             if (args.ContainsKey("acolor")) {
-                colors.setExprAt(3, args["acolor"]);
+                color.setExprAt(3, args["acolor"]);
             }
             #endregion
 
@@ -105,18 +104,13 @@ namespace Complexity.Objects {
                 {0, 0, 0}
             }).Transpose();
 
-            col = MatrixD.OfArray(new Double[,] {
-                {0, 0, 0, 0}
-            }).Transpose();
-
             geometry = new double[] { 0, 0, 0 };
-            color = new double[] { 0, 0, 0, 0 };
             position = new double[] { 0, 0, 0 };
-            triangles = new byte[] { 0, 0, 0 };
+            vertexColor = new double[] { 0, 0, 0, 0 };
             origin = new VectorExpr(new string[] { "0", "0", "0" });
             rot = new VectorExpr(new string[] { "0", "0", "0" });
             trans = new VectorExpr(new string[] { "0", "0", "0" });
-            colors = new VectorExpr(new string[] { "0", "0", "0", "0" });
+            color = new VectorExpr(new string[] { "1", "0", "1", "0" });
             scale = new ExpressionD("1");
         }
 
@@ -156,7 +150,7 @@ namespace Complexity.Objects {
             rot.Recalculate();
             trans.Recalculate();
             origin.Recalculate();
-            colors.Recalculate();
+            color.Recalculate();
 
             //Transform geometry matrix
             // = new MatrixD(geo.RowCount, geo.ColumnCount)
@@ -167,12 +161,6 @@ namespace Complexity.Objects {
             _geo = MatrixD.TranslateMatrix(position[0], position[1], position[2], _geo);
             _geo = MatrixD.TranslateMatrix(trans.values, _geo);
 
-            //Transform color matrix
-            MatrixD _col;
-            _col = MatrixD.TranslateMatrix(colors.values, col);
-
-            //Set values
-            color = _col.ToColumnWiseArray();
             geometry = _geo.ToColumnWiseArray();
         }
 
@@ -185,12 +173,9 @@ namespace Complexity.Objects {
         }
 
         /// <summary>
-        /// 
+        /// Note, there is something called a VertexBuffer that could potentially
+        /// be used to improve efficiency.
         /// </summary>
-        public virtual void Draw() {
-            GL.VertexPointer(3, VertexPointerType.Double, 0, geometry);
-            GL.ColorPointer(4, ColorPointerType.Double, 0, color);
-            GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
-        }
+        public abstract void Draw();
     }
 }

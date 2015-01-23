@@ -21,6 +21,7 @@ namespace Complexity.Util {
             //Populate symbols with some values
             symbols = new ArrayList();
             symbols.Add(new SymbolD("time", () => Global.GetElapsedTime()));
+            symbols.Add(new SymbolD("pi", () => Math.PI));
 
             Recalculate();
         }

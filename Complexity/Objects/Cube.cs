@@ -12,11 +12,11 @@ namespace Complexity.Objects {
     /// <summary>
     /// 
     /// </summary>
-    public class Cube : Object3 {
+    public class ComplexCube : ComplexObject3 {
         /// <summary>
         /// 
         /// </summary>
-        public Cube()
+        public ComplexCube()
             : base() {
             Init();
         }
@@ -25,7 +25,7 @@ namespace Complexity.Objects {
         /// 
         /// </summary>
         /// <param name="args"></param>
-        public Cube(Dictionary<string, string> args)
+        public ComplexCube(Dictionary<string, string> args)
             : base(args) {
 
             //Process cube specific args
@@ -82,7 +82,9 @@ namespace Complexity.Objects {
         }
 
         public override void Draw() {
-            base.Draw();
+            GL.VertexPointer(3, VertexPointerType.Double, 0, geometry);
+            GL.ColorPointer(4, ColorPointerType.Double, 0, vertexColor);
+            GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
         }
     }
 }

@@ -14,17 +14,6 @@ namespace Complexity {
     /// For testing. When this is compiled as a library, this will be removed.
     /// </summary>
     class MainClass {
-        private static Scene scene;
-        private static RenderWindow renderWin;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [STAThread]
-        private static void RunRenderWindow() {
-            renderWin = new RenderWindow(scene);
-            renderWin.Run(60.0);
-        }
 
         /// <summary>
         /// 
@@ -34,12 +23,12 @@ namespace Complexity {
         static int Main(string[] args) {
             //Create all the things
             Console.Write("Creating objects... ");
-            Cube cube = new Cube( new Dictionary<string, string>() {
+            ComplexCube cube = new ComplexCube( new Dictionary<string, string>() {
                     {"scale", "1/5"},
                     {"name", "cube"},
                     {"rcolor", "1"},
                     {"gcolor", "0"},
-                    {"bcolor", "1"},
+                    {"bcolor", "(sin(time)+1)/2"},
                     {"acolor", "0"}
                 });
 
@@ -66,17 +55,22 @@ namespace Complexity {
                 }
             );
 
-            scene = new Scene(null);
-            scene.Add(sys2);
+            Scene scene = new Scene(null);
+            //scene.Add(sys2);
+            scene.Add(new SimpleDot3(new Dictionary<string, string> {
+                {"scale", "sin(time)"},
+                {"rcolor", "sin(time+pi)"},
+                {"bcolor", "sin(time)"}
+            }));
             Console.WriteLine("Done.");
 
-            //Render Thread
-            Thread thread = new Thread(new ThreadStart(RunRenderWindow));
-            Console.Write("Creating renderwindow... ");
-            thread.Start();
-            Console.WriteLine(" Done.");
-
-            Global.Begin();
+            //Create game universe
+            Console.Write("Creating Universe... ");
+            Universe u = new Universe();
+            u.AddScene(scene);
+            u.SetActiveScene(0);
+            u.Begin();
+            Console.WriteLine("Done.");
 
             while (true) {
                 Console.ReadLine();
