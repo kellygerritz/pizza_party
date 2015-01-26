@@ -10,36 +10,45 @@ using System.Threading.Tasks;
 using System.Collections;
 
 namespace Complexity.Util {
+    /// <summary>
+    /// Utility math methods
+    /// </summary>
+    public static class MathUtil {
+        public static double Distance3(Point3 a, Point3 b) {
+            return Math.Sqrt(Math.Pow((a.x - b.x), 2)
+                + Math.Pow((a.y - b.y), 2)
+                + Math.Pow((a.z - b.z), 2));
+        }
+
+        public static double Distance3(double x1, double x2, double y1, double y2, double z1, double z2) {
+            return Math.Sqrt(Math.Pow((x2 - x1), 2)
+                + Math.Pow((y2 - y1), 2)
+                + Math.Pow((z2 - z1), 2));
+        }
+
+        public static double[] ToColumnWiseArray(double[,] array) {
+            double[] result = new double[array.GetLength(0) * array.GetLength(1)];
+            for (int i = 0; i < array.GetLength(1); i++ ) {
+                for (int j = 0; j < array.GetLength(0); j++) {
+                    result[i * array.GetLength(0) + j] = array[j, i];
+                }
+            }
+            return result;
+        }
+    }
 
     /// <summary>
     /// This is a wrapper class
     /// </summary>
     public class MatrixD : DenseMatrix {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="r"></param>
-        /// <param name="c"></param>
-        public MatrixD(int r, int c)
-            : base(r, c) {
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="rows"></param>
-        /// <param name="columns"></param>
-        /// <param name="data"></param>
-        public MatrixD(int rows, int columns, Double[] data)
-            : base(rows, columns, data) {
-        }
+        #region Static
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static MatrixD OfArray(Double[,] data) {
+        public new static MatrixD OfArray(Double[,] data) {
             Matrix<double> _data = DenseMatrix.OfArray(data);
             return new MatrixD(_data.RowCount, _data.ColumnCount, _data.ToColumnWiseArray());
         }
@@ -150,11 +159,32 @@ namespace Complexity.Util {
             return new MatrixD(d.RowCount, d.ColumnCount, d.ToColumnWiseArray());
         }
 
+        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="c"></param>
+        public MatrixD(int rows, int columns)
+            : base(rows, columns) {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="rows"></param>
+        /// <param name="columns"></param>
+        /// <param name="data"></param>
+        public MatrixD(int rows, int columns, Double[] data)
+            : base(rows, columns, data) {
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public MatrixD Transpose() {
+        public new MatrixD Transpose() {
             Matrix<double> _this = ((Matrix<double>) this).Transpose();
             return new MatrixD(_this.RowCount, _this.ColumnCount, _this.ToColumnWiseArray());
         }
@@ -164,7 +194,7 @@ namespace Complexity.Util {
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public VectorD Column(int index) {
+        public new VectorD Column(int index) {
             return new VectorD(base.Column(index).ToArray()); 
         }
 
@@ -176,6 +206,54 @@ namespace Complexity.Util {
         public void SetRow(int row, double num) {
             base.SetRow(row, Vector<double>.Build.Dense(ColumnCount, num));
         }
+
+        #region Calculations
+
+        /// <summary>
+        /// Returns the result of multiplying matrix A by scale
+        /// </summary>
+        /// <param name="scale"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public void Scale(double scale) {
+            Matrix<double> result = DenseMatrix.OfArray(ToArray());
+            result *= scale;
+            SetSubMatrix(0, 0, result);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public void Translate(double x, double y, double z) {
+            //Prepare translation matrix
+            Matrix<double> trans = Matrix<double>.Build.Dense(RowCount, ColumnCount, 0);
+            trans.SetRow(0, Vector<double>.Build.Dense(ColumnCount, x));
+            trans.SetRow(1, Vector<double>.Build.Dense(ColumnCount, y));
+            trans.SetRow(2, Vector<double>.Build.Dense(ColumnCount, z));
+
+            SetSubMatrix(0, 0, trans + this);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vec"></param>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public void Translate(VectorD vec) {
+            Matrix<double> trans = Matrix<double>.Build.Dense(RowCount, ColumnCount, 0);
+            for (int i = 0; i < vec.Count; i++) {
+                trans.SetRow(i, Vector<double>.Build.Dense(ColumnCount, vec.At(i)));
+            }
+            SetSubMatrix(0, 0, trans + this);
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -201,7 +279,7 @@ namespace Complexity.Util {
         /// </summary>
         /// <param name="vec"></param>
         /// <returns></returns>
-        public static VectorD OfArray(Double[] vec) {
+        public new static VectorD OfArray(Double[] vec) {
             return new VectorD(vec);
         }
     }
@@ -243,11 +321,23 @@ namespace Complexity.Util {
         }
 
         /// <summary>
+        /// Return all the values of this vector as a double[]
+        /// </summary>
+        /// <returns></returns>
+        public double[] Values() {
+            double[] result = new double[values.Count];
+            for (int i = 0; i < values.Count; i++) {
+                result[i] = values.At(i);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Sets the expression at the given index
         /// </summary>
         /// <param name="index"></param>
         /// <param name="expr"></param>
-        public void setExprAt(int index, string expr) {
+        public void SetExprAt(int index, string expr) {
             expressions[index] = new ExpressionD(expr);
         }
     }

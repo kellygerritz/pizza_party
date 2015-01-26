@@ -11,21 +11,44 @@ namespace Complexity.Objects {
     /// than a basic object and subsiquently takes up more memory.
     /// </summary>
     public abstract class ComplexObject3 : Object3 {
+        //rot = how it rotates
+        //trans = how it moves
+        //origin = center of the object
+        //position = where the origin is
+        //These are the values from which the PointMatrix is calculated
+        protected double[] geometry; //<- remove this later
+        protected double[] position;
+        protected double[] vertexColor;
+        protected VectorExpr trans, color;
+        protected ExpressionD scale;
+
         protected byte[] triangles;
+        protected MatrixD col, geo;
+        protected VectorExpr rot, origin;
 
-        protected MatrixD col;
+        public ComplexObject3() { }
 
-        public ComplexObject3()
-            : base() {
-        }
-
-        public ComplexObject3(Dictionary<string, string> args)
-            : base(args) {
-
+        public ComplexObject3(double[,] geometry) {
+            ConvertGeometry(geometry);
         }
 
         public override void Recalculate() {
-            base.Recalculate();
+            //Recalculate the vector values
+            rot.Recalculate();
+            trans.Recalculate();
+            origin.Recalculate();
+            color.Recalculate();
+
+            //Transform geometry matrix
+            // = new MatrixD(geo.RowCount, geo.ColumnCount)
+            MatrixD _geo;
+            _geo = MatrixD.TranslateMatrix(origin.values, geo);
+            //_geo = MatrixD.ScaleMatrix(scale.Eval(), _geo);
+            _geo = MatrixD.RotateMatrix(rot.values, _geo);
+            _geo = MatrixD.TranslateMatrix(position[0], position[1], position[2], _geo);
+            _geo = MatrixD.TranslateMatrix(trans.values, _geo);
+
+            geometry = _geo.ToColumnWiseArray();
 
             //Transform color matrix
             MatrixD _col;
@@ -35,14 +58,113 @@ namespace Complexity.Objects {
             vertexColor = _col.ToColumnWiseArray();
         }
 
+        public override void SetAttributes(Dictionary<string, string> args) {
+            base.SetAttributes(args);
+
+            #region Set Rotational Values
+            if (args.ContainsKey("rotation")) {
+                rot = new VectorExpr(new string[] {
+                args["rotation"], args["rotation"], args["rotation"] });
+            }
+
+            if (args.ContainsKey("xrotation")) {
+                rot.SetExprAt(0, args["xrotation"]);
+            }
+
+            if (args.ContainsKey("yrotation")) {
+                rot.SetExprAt(1, args["yrotation"]);
+            }
+
+            if (args.ContainsKey("zrotation")) {
+                rot.SetExprAt(2, args["zrotation"]);
+            }
+            #endregion
+
+            #region Set Color Values
+            if (args.ContainsKey("color")) {
+                color = new VectorExpr(new string[] {
+                    args["color"], args["color"], args["color"], args["color"]
+                });
+            }
+
+            if (args.ContainsKey("rcolor")) {
+                color.SetExprAt(0, args["rcolor"]);
+            }
+
+            if (args.ContainsKey("gcolor")) {
+                color.SetExprAt(1, args["gcolor"]);
+            }
+
+            if (args.ContainsKey("bcolor")) {
+                color.SetExprAt(2, args["bcolor"]);
+            }
+
+            if (args.ContainsKey("acolor")) {
+                color.SetExprAt(3, args["acolor"]);
+            }
+            #endregion
+
+            if (args.ContainsKey("scale")) {
+                scale = new ExpressionD(args["scale"]);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="origin"></param>
+        public void SetOrigin(VectorExpr origin) {
+            this.origin = origin;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="vec"></param>
+        public void SetTranslation(VectorExpr vec) {
+            trans = vec;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="scale"></param>
+        public void SetScale(string scale) {
+            this.scale.SetInfix(scale);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="position"></param>
+        public void SetPosition(double[] position) {
+            if (position.Length != 3) {
+                throw new Exception("Invalid number of elements in position array, need exactly 3.");
+            }
+            this.position = position;
+        }
+
         protected override void Init() {
             base.Init();
 
+            geo = MatrixD.OfArray(new Double[,] {
+                {0}, {0}, {0}
+            });
+
+            position = new double[] { 0, 0, 0 };
+            trans = new VectorExpr(new string[] { "0", "0", "0" });
+            color = new VectorExpr(new string[] { "1", "0", "1", "0" });
+            scale = new ExpressionD("1");
+
+            geometry = new double[] { 0, 0, 0 };
+            vertexColor = new double[] { 0, 0, 0, 0 };
+            origin = new VectorExpr(new string[] { "0", "0", "0" });
+            rot = new VectorExpr(new string[] { "0", "0", "0" });
             triangles = new byte[] { 0, 0, 0 };
 
             col = MatrixD.OfArray(new Double[,] {
-                {0, 0, 0, 0}
-            }).Transpose();
+                {0}, {0}, {0}, {0}
+            });
         }
     }
 }

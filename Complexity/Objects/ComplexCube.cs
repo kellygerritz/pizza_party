@@ -16,26 +16,6 @@ namespace Complexity.Objects {
         /// <summary>
         /// 
         /// </summary>
-        public ComplexCube()
-            : base() {
-            Init();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
-        public ComplexCube(Dictionary<string, string> args)
-            : base(args) {
-
-            //Process cube specific args
-
-            Recalculate();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         protected override void Init() {
             base.Init();
 

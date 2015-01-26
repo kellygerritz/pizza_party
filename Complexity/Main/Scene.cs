@@ -19,7 +19,7 @@ namespace Complexity {
         /// 
         /// </summary>
         /// <param name="args"></param>
-        public Scene(string[] args) {
+        public Scene() {
                 Init();
         }
 

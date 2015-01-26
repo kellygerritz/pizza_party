@@ -1,5 +1,7 @@
-﻿using OpenTK.Graphics;
+﻿using Complexity.Util;
+using OpenTK.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +12,42 @@ namespace Complexity.Objects {
     /// A basic object with simple controls.
     /// </summary>
     public abstract class SimpleObject3 : Object3 {
+        protected double[] color;
 
-        public SimpleObject3()
-            : base() {
+        public SimpleObject3() { }
+
+        public SimpleObject3(double[,] geometry) {
+            ConvertGeometry(geometry);
+            originalGeo = MatrixD.OfArray(vertecies.ToArray());
         }
 
-        public SimpleObject3(Dictionary<string, string> args)
-            : base(args) {
+        public void SetColor(double[] color) {
+            this.color = color;
+        }
+
+        public override void SetAttributes(Dictionary<string, string> args) {
+            base.SetAttributes(args);
+        }
+
+        public void ScaleGeo(double scale) {
+            vertecies.Scale(scale);
+        }
+
+        public void TranslateGeo(double x, double y, double z) {
+            vertecies.Translate(x, y, z);
+        }
+
+        /// <summary>
+        /// For simple objects this just resets the point matrix to the originalGeo.
+        /// Use this before performing any calculations on vertecies, unless you know what
+        /// you're doing.
+        /// </summary>
+        public override void Recalculate() {
+            vertecies.SetFromMatrix(originalGeo);
+        }
+
+        protected override void Init() {
+            color = new double[] { 255, 0, 255, 1 };
         }
     }
 }

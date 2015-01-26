@@ -14,14 +14,14 @@ namespace Complexity.Util {
 
         #region Static Expression Management
         private static ArrayList expressions = new ArrayList();
-        private static ArrayList symbols;
+        private static Dictionary<string, SymbolD> symbols;
         private static Dictionary<string, FloatingPoint> symbolValues;
 
         static ExpressionD() {
             //Populate symbols with some values
-            symbols = new ArrayList();
-            symbols.Add(new SymbolD("time", () => Global.GetElapsedTime()));
-            symbols.Add(new SymbolD("pi", () => Math.PI));
+            symbols = new Dictionary<string, SymbolD>();
+            symbols.Add("time", new SymbolD("time", () => Global.GetElapsedTime()));
+            symbols.Add("pi", new SymbolD("pi", () => Math.PI));
 
             Recalculate();
         }
@@ -32,9 +32,30 @@ namespace Complexity.Util {
         /// </summary>
         public static void Recalculate() {
             symbolValues = new Dictionary<string, FloatingPoint>();
-            foreach (SymbolD symbol in symbols) {
-                symbolValues[symbol.name] = symbol.GetValue();
+            foreach (KeyValuePair<string, SymbolD> entry in symbols) {
+                symbolValues[entry.Key] = entry.Value.GetValue();
             }
+        }
+
+        public static void AddSymbol(string name, SymbolD symbol) {
+            symbols.Add(name, symbol);
+            symbolValues.Add(name, symbol.GetValue());
+        }
+
+        public static void RemoveSymbol(string name) {
+            symbols.Remove(name);
+            symbolValues.Remove(name);
+        }
+
+        public static void SetSymbolValue(string name, double value) {
+            symbolValues[name] = value;
+        }
+
+        public static double GetValue(string name) {
+            if (symbolValues.ContainsKey(name)) {
+                return symbolValues[name].RealValue;
+            }
+            throw new Exception("No such value " + name);
         }
 
         #endregion
@@ -46,6 +67,14 @@ namespace Complexity.Util {
         public ExpressionD(string expr) {
             expressions.Add(this);
             infix = Infix.ParseOrThrow(expr);
+        }
+
+        /// <summary>
+        /// Allows you to change this expression without creating a new one
+        /// </summary>
+        /// <param name="infix"></param>
+        public void SetInfix(string infix) {
+            this.infix = Infix.ParseOrThrow(infix);
         }
 
         /// <summary>
@@ -74,7 +103,7 @@ namespace Complexity.Util {
         }
     }
 
-    class SymbolD {
+    public class SymbolD {
         public readonly string name;
         private double value;
         private Eval eval;
@@ -86,6 +115,10 @@ namespace Complexity.Util {
 
         public double GetValue() {
             return eval();
+        }
+
+        public void SetVal(Eval eval) {
+            this.eval = eval;
         }
 
         public delegate double Eval();

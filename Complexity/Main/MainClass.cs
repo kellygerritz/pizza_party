@@ -22,46 +22,31 @@ namespace Complexity {
         /// <returns></returns>
         static int Main(string[] args) {
             //Create all the things
-            Console.Write("Creating objects... ");
-            ComplexCube cube = new ComplexCube( new Dictionary<string, string>() {
-                    {"scale", "1/5"},
-                    {"name", "cube"},
-                    {"rcolor", "1"},
-                    {"gcolor", "0"},
-                    {"bcolor", "(sin(time)+1)/2"},
-                    {"acolor", "0"}
-                });
+            Console.Write("Creating Objects... ");
 
+            ComplexCube cube = new ComplexCube();
+            cube.SetScale("1/10");
+            /*
             System3 sys = new System3(
-                new Double[,] {
-                    {   0.5,  0,  0  },
-                    {   -0.5, 0,  0  }},
-                cube,
-                new Dictionary<string, string> {
-                    {"scale", "1/2"},
-                    {"name", "sys1"}
-                }
-            );
+                new double[,] {
+                    { 1, 0, 0 },
+                    { 0, 0, 0 },
+                    { -1,0, 0 }
+                },
+                cube);
+            */
+            Pen3 pen = new Pen3(GeometryBuilder.Circle(30));
+            pen.SetAttributes(new Dictionary<string, string> {
+                {"scale", "dist/30*sin(time)"},
+                {"bcolor", "255*sin(time)"},
+                {"rcolor", "255*sin(time+pi)"}
+            });
+            //cool -> "scale", "dist/50+sin(time)/50"
+            Scene scene = new Scene();
+            //scene.Add(sys);
+            scene.Add(pen);
+            //scene.Add(new SimpleDot3(5));
 
-            System3 sys2 = new System3(
-                new Double[,] {
-                    {   1,  0,  0   },
-                    {   -1, 0,  0   }},
-                sys,
-                new Dictionary<string, string> {
-                    {"name", "sys2"},
-                    {"scale", "sin(time)"},
-                    {"zrotation", "time/5"}
-                }
-            );
-
-            Scene scene = new Scene(null);
-            //scene.Add(sys2);
-            scene.Add(new SimpleDot3(new Dictionary<string, string> {
-                {"scale", "sin(time)"},
-                {"rcolor", "sin(time+pi)"},
-                {"bcolor", "sin(time)"}
-            }));
             Console.WriteLine("Done.");
 
             //Create game universe
@@ -75,8 +60,6 @@ namespace Complexity {
             while (true) {
                 Console.ReadLine();
             }
-
-            return 1;
         }
     }
 }
