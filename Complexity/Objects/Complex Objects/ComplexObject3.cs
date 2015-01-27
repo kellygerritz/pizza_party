@@ -16,15 +16,10 @@ namespace Complexity.Objects {
         //origin = center of the object
         //position = where the origin is
         //These are the values from which the PointMatrix is calculated
-        protected double[] geometry; //<- remove this later
         protected double[] position;
         protected double[] vertexColor;
-        protected VectorExpr trans, color;
+        protected VectorExpr trans, color, rot, origin;
         protected ExpressionD scale;
-
-        protected byte[] triangles;
-        protected MatrixD col, geo;
-        protected VectorExpr rot, origin;
 
         public ComplexObject3() { }
 
@@ -42,20 +37,20 @@ namespace Complexity.Objects {
             //Transform geometry matrix
             // = new MatrixD(geo.RowCount, geo.ColumnCount)
             MatrixD _geo;
-            _geo = MatrixD.TranslateMatrix(origin.values, geo);
+            _geo = MatrixD.TranslateMatrix(origin.values, originalGeo);
             //_geo = MatrixD.ScaleMatrix(scale.Eval(), _geo);
             _geo = MatrixD.RotateMatrix(rot.values, _geo);
             _geo = MatrixD.TranslateMatrix(position[0], position[1], position[2], _geo);
             _geo = MatrixD.TranslateMatrix(trans.values, _geo);
 
-            geometry = _geo.ToColumnWiseArray();
+            //geometry = _geo.ToColumnWiseArray();
 
             //Transform color matrix
-            MatrixD _col;
-            _col = MatrixD.TranslateMatrix(color.values, col);
+            //MatrixD _col;
+            //_col = MatrixD.TranslateMatrix(color.values, col);
 
             //Set values
-            vertexColor = _col.ToColumnWiseArray();
+            //vertexColor = _col.ToColumnWiseArray();
         }
 
         public override void SetAttributes(Dictionary<string, string> args) {
@@ -147,24 +142,12 @@ namespace Complexity.Objects {
         protected override void Init() {
             base.Init();
 
-            geo = MatrixD.OfArray(new Double[,] {
-                {0}, {0}, {0}
-            });
-
             position = new double[] { 0, 0, 0 };
+            scale = new ExpressionD("1");
             trans = new VectorExpr(new string[] { "0", "0", "0" });
             color = new VectorExpr(new string[] { "1", "0", "1", "0" });
-            scale = new ExpressionD("1");
-
-            geometry = new double[] { 0, 0, 0 };
-            vertexColor = new double[] { 0, 0, 0, 0 };
             origin = new VectorExpr(new string[] { "0", "0", "0" });
             rot = new VectorExpr(new string[] { "0", "0", "0" });
-            triangles = new byte[] { 0, 0, 0 };
-
-            col = MatrixD.OfArray(new Double[,] {
-                {0}, {0}, {0}, {0}
-            });
         }
     }
 }

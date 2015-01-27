@@ -26,5 +26,13 @@ namespace Complexity.Util {
 
             return result;
         }
+
+        public static double[,] Cube() {
+            return new double[,] {
+                {-0.5, 0.5,  0.5, -0.5, -0.5,  0.5,  0.5, -0.5},
+                { 0.5, 0.5, -0.5, -0.5,  0.5,  0.5, -0.5, -0.5},
+                { 0.5, 0.5,  0.5,  0.5, -0.5, -0.5, -0.5, -0.5}
+            };
+        }
     }
 }

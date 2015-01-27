@@ -13,33 +13,18 @@ namespace Complexity.Objects {
     /// 
     /// </summary>
     public class ComplexCube : ComplexObject3 {
+        protected byte[] triangles;
+
+        public ComplexCube() {
+            ConvertGeometry(GeometryBuilder.Cube());
+            originalGeo = MatrixD.OfArray(GeometryBuilder.Cube());
+        }
+
         /// <summary>
         /// 
         /// </summary>
         protected override void Init() {
             base.Init();
-
-            geo = MatrixD.OfArray(new Double[,] {
-                {-0.5,  0.5,  0.5}, // vertex[0]
-			    {0.5,  0.5,  0.5}, // vertex[1]
-		        {0.5, -0.5,  0.5}, // vertex[2]
-		        {-0.5, -0.5,  0.5}, // vertex[3]
-			    {-0.5,  0.5, -0.5}, // vertex[4]
-			    {0.5,  0.5, -0.5}, // vertex[5]
-			    {0.5, -0.5, -0.5}, // vertex[6]
-			    {-0.5, -0.5, -0.5} // vertex[7]
-            }).Transpose();
-
-            col = new MatrixD(8, 4, new Double[] {
-                0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0,
-			    0.0, 0.0, 0.0, 0.0
-            }).Transpose();
 
             triangles = new byte[] {
                 1, 0, 2, // front
@@ -62,9 +47,12 @@ namespace Complexity.Objects {
         }
 
         public override void Draw() {
-            GL.VertexPointer(3, VertexPointerType.Double, 0, geometry);
-            GL.ColorPointer(4, ColorPointerType.Double, 0, vertexColor);
+            /*
+            GL.Color4(color.Values());
+            GL.VertexPointer(3, VertexPointerType.Double, 0, vertecies.ToColumnWiseArray());
+            GL.ColorPointer(4, ColorPointerType.Double, 0, color.Values());
             GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
+            */
         }
     }
 }

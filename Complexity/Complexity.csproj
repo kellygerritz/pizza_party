@@ -39,22 +39,22 @@
     <Compile Include="Main\RenderWindow.cs" />
     <Compile Include="Main\Universe.cs" />
     <Compile Include="Objects\Compound Objects\Pen3.cs" />
-    <Compile Include="Objects\SimpleDot3.cs" />
-    <Compile Include="Objects\SimpleObject3.cs" />
-    <Compile Include="Objects\ComplexObject3.cs" />
+    <Compile Include="Objects\Simple Objects\SimpleDot3.cs" />
+    <Compile Include="Objects\Simple Objects\SimpleObject3.cs" />
+    <Compile Include="Objects\Complex Objects\ComplexObject3.cs" />
     <Compile Include="Objects\Renderable.cs" />
     <Compile Include="Objects\Compound Objects\System3.cs" />
-    <Compile Include="Util\ExpressionD.cs" />
+    <Compile Include="Math\ExpressionD.cs" />
     <Compile Include="Util\GeometryBuilder.cs" />
     <Compile Include="Util\Global.cs" />
     <Compile Include="Main\MainClass.cs" />
-    <Compile Include="Objects\ComplexCube.cs" />
+    <Compile Include="Objects\Complex Objects\ComplexCube.cs" />
     <Compile Include="Objects\Object3.cs" />
     <Compile Include="Main\Scene.cs" />
-    <Compile Include="Util\MathUtil.cs" />
+    <Compile Include="Math\MathUtil.cs" />
     <Compile Include="Util\Point3.cs" />
     <Compile Include="Util\PointMatrix.cs" />
-    <Compile Include="Util\StrongTypeArrayList.cs" />
+    <Compile Include="Util\TypedArrayList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FParsec">

@@ -24,19 +24,15 @@ namespace Complexity.Objects {
 
         public System3() { }
 
-        public System3(double[,] geometry)
-            : base(geometry) {
-        }
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="geometry"></param>
         /// <param name="masterObj"></param>
-        public System3(double[,] geometry, Object3 masterObj)
-            : base(geometry) {
+        public System3(double[,] geometry, Object3 masterObj) {
             SetMasterObj(masterObj);
-            geo = MatrixD.OfArray(geometry);
+            ConvertGeometry(geometry);
+            originalGeo = MatrixD.OfArray(geometry);
         }
 
         protected virtual void SetMasterObj(Object3 obj) {
@@ -57,7 +53,6 @@ namespace Complexity.Objects {
 
             vertecies = new PointMatrix(_vertecies);
         }
-
 
         /// <summary>
         /// 

@@ -15,10 +15,9 @@ namespace Complexity.Objects {
     /// ComplexObject -> Has a Recalculate method and can update itself
     /// </summary>
     public abstract class Object3 : Renderable {
-        //Point Matrix, vertex by vertex information
+        protected string name;
         protected PointMatrix vertecies;
         protected MatrixD originalGeo;
-        protected string name;
 
         /// <summary>
         /// 

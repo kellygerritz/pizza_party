@@ -26,24 +26,24 @@ namespace Complexity {
 
             ComplexCube cube = new ComplexCube();
             cube.SetScale("1/10");
-            /*
+
+            SimpleDot3 dot = new SimpleDot3(5);
+            
             System3 sys = new System3(
                 new double[,] {
                     { 1, 0, 0 },
                     { 0, 0, 0 },
                     { -1,0, 0 }
                 },
-                cube);
-            */
+                dot);
+            
             Pen3 pen = new Pen3(GeometryBuilder.Circle(30));
             pen.SetAttributes(new Dictionary<string, string> {
-                {"scale", "dist/30*sin(time)"},
-                {"bcolor", "255*sin(time)"},
-                {"rcolor", "255*sin(time+pi)"}
+                {"scale", "sin(time+dist/3)/2"},
+                {"rcolor", "sin(time)"}
             });
-            //cool -> "scale", "dist/50+sin(time)/50"
             Scene scene = new Scene();
-            //scene.Add(sys);
+            scene.Add(sys);
             scene.Add(pen);
             //scene.Add(new SimpleDot3(5));
 

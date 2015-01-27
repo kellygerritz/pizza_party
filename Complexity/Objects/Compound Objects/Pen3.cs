@@ -41,7 +41,7 @@ namespace Complexity.Objects {
         }
 
         public override void Recalculate() {
-            base.Recalculate();
+            //base.Recalculate();
 
             //Setup expression values
             ExpressionD.AddSymbol("dist", new SymbolD("dist", () => 0));
@@ -104,7 +104,7 @@ namespace Complexity.Objects {
         protected override void ConvertGeometry(double[,] g) {
             //Create the temp points array
             TypedArrayList<Point3> _points = new TypedArrayList<Point3>();
-            double dist, xdist, ydist, zdist;
+            double dist, _dist, xdist, ydist, zdist;
             float[] slope = new float[] { 0f, 0f, 0f };
             int noPoints;
 
@@ -116,12 +116,6 @@ namespace Complexity.Objects {
                     (float)(g[1, i] / g[1, i - 1]),
                     (float)(g[2, i] / g[2, i - 1])};
 
-                _point = new PenVertex((float)g[0, i - 1], (float)g[1, i - 1], (float)g[2, i - 1]);
-                _point.obj = (Object3)masterObj.Clone();
-                _point.distance = (float)dist;
-                _point.slope = slope;
-                _points.Add(_point);
-
                 //Determine relevant values
                 dist = MathUtil.Distance3(g[0, i - 1], g[0, i], g[1, i - 1], g[1, i], g[2, i - 1], g[2, i]);
                 noPoints = (int)Math.Floor(dist / maxDist);
@@ -132,27 +126,28 @@ namespace Complexity.Objects {
                     ydist = (g[1, i] - g[1, i - 1]) / noPoints;
                     zdist = (g[2, i] - g[2, i - 1]) / noPoints;
 
-                    for (double d = 1; d < noPoints; d += 1) {
+                    for (double d = 0; d < noPoints; d += 1) {
                         _point = new PenVertex(
                             (float)(d * xdist + g[0, i - 1]),
                             (float)(d * ydist + g[1, i - 1]),
                             (float)(d * zdist + g[2, i - 1]));
                         _point.obj = (Object3)masterObj.Clone();
-                        _point.distance = (float)(((PenVertex)_points.Last()).distance + maxDist * d);
+                        
+                        _dist = (_points.Count() > 0) ? ((PenVertex)_points.Last()).distance : 0;
+                        _point.distance = (float)(_dist + maxDist);
                         _point.slope = slope;
-                        /*
-                        _point.slope = new float[] {
-                            (float)(xdist / maxDist),
-                            (float)(ydist / maxDist),
-                            (float)(zdist / maxDist)};
-                        */
-
                         _points.Add(_point);
                     }
                 }
+
+                _point = new PenVertex((float)g[0, i], (float)g[1, i], (float)g[2, i]);
+                _point.obj = (Object3)masterObj.Clone();
+                _point.distance = ((PenVertex)_points.Last()).distance + ((float)maxDist);
+                _point.slope = slope;
+                _points.Add(_point);
             }
 
-            //Add the last point
+            /*
             _point = new PenVertex(
                 (float)g[0, g.GetLength(1) - 1],
                 (float)g[1, g.GetLength(1) - 1],
@@ -164,6 +159,7 @@ namespace Complexity.Objects {
                 _points.Last().z, _point.z);
             _point.slope = slope;
             _points.Add(_point);
+            */
 
             vertecies = new PointMatrix(_points);
         }
