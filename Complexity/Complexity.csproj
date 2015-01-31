@@ -45,7 +45,6 @@
     <Compile Include="Objects\Complex Objects\ComplexObject3.cs" />
     <Compile Include="Objects\Renderable.cs" />
     <Compile Include="Objects\Compound Objects\System3.cs" />
-    <Compile Include="Math_Things\ExpresionC.cs" />
     <Compile Include="Util\CloneableStack.cs" />
     <Compile Include="Util\GeometryBuilder.cs" />
     <Compile Include="Util\Global.cs" />
