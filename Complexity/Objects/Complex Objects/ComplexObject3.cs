@@ -27,6 +27,13 @@ namespace Complexity.Objects {
             ConvertGeometry(geometry);
         }
 
+        public override void SetColor(double[] color) {
+            this.color.SetExprAt(0, "" + color[0]);
+            this.color.SetExprAt(1, "" + color[1]);
+            this.color.SetExprAt(2, "" + color[2]);
+            this.color.SetExprAt(3, "" + color[3]);
+        }
+
         public override void Recalculate() {
             //Recalculate the vector values
             rot.Recalculate();

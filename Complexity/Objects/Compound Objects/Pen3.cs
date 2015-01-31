@@ -26,7 +26,6 @@ namespace Complexity.Objects {
             public PenVertex(float x, float y, float z)
                 : base(x, y, z) {
             }
-            public float distance;
             //A unit direction vector representing the slope of the line at the point
             public float[] slope;
 
@@ -132,7 +131,7 @@ namespace Complexity.Objects {
                             (float)(d * ydist + g[1, i - 1]),
                             (float)(d * zdist + g[2, i - 1]));
                         _point.obj = (Object3)masterObj.Clone();
-                        
+
                         _dist = (_points.Count() > 0) ? ((PenVertex)_points.Last()).distance : 0;
                         _point.distance = (float)(_dist + maxDist);
                         _point.slope = slope;
@@ -146,20 +145,6 @@ namespace Complexity.Objects {
                 _point.slope = slope;
                 _points.Add(_point);
             }
-
-            /*
-            _point = new PenVertex(
-                (float)g[0, g.GetLength(1) - 1],
-                (float)g[1, g.GetLength(1) - 1],
-                (float)g[2, g.GetLength(1) - 1]);
-            _point.obj = (Object3)masterObj.Clone();
-            _point.distance = (float)MathUtil.Distance3(
-                _points.Last().x, _point.x,
-                _points.Last().y, _point.y,
-                _points.Last().z, _point.z);
-            _point.slope = slope;
-            _points.Add(_point);
-            */
 
             vertecies = new PointMatrix(_points);
         }

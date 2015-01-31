@@ -38,20 +38,21 @@
   <ItemGroup>
     <Compile Include="Main\RenderWindow.cs" />
     <Compile Include="Main\Universe.cs" />
+    <Compile Include="Math_Things\DiscreteExpression.cs" />
     <Compile Include="Objects\Compound Objects\Pen3.cs" />
     <Compile Include="Objects\Simple Objects\SimpleDot3.cs" />
     <Compile Include="Objects\Simple Objects\SimpleObject3.cs" />
     <Compile Include="Objects\Complex Objects\ComplexObject3.cs" />
     <Compile Include="Objects\Renderable.cs" />
     <Compile Include="Objects\Compound Objects\System3.cs" />
-    <Compile Include="Math\ExpressionD.cs" />
+    <Compile Include="Math_Things\ExpressionD.cs" />
     <Compile Include="Util\GeometryBuilder.cs" />
     <Compile Include="Util\Global.cs" />
     <Compile Include="Main\MainClass.cs" />
     <Compile Include="Objects\Complex Objects\ComplexCube.cs" />
     <Compile Include="Objects\Object3.cs" />
     <Compile Include="Main\Scene.cs" />
-    <Compile Include="Math\MathUtil.cs" />
+    <Compile Include="Math_Things\MathUtil.cs" />
     <Compile Include="Util\Point3.cs" />
     <Compile Include="Util\PointMatrix.cs" />
     <Compile Include="Util\TypedArrayList.cs" />

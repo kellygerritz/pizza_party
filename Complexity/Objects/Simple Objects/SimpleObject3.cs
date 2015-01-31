@@ -21,20 +21,12 @@ namespace Complexity.Objects {
             originalGeo = MatrixD.OfArray(vertecies.ToArray());
         }
 
-        public void SetColor(double[] color) {
-            this.color = color;
-        }
-
         public override void SetAttributes(Dictionary<string, string> args) {
             base.SetAttributes(args);
         }
 
-        public void ScaleGeo(double scale) {
-            vertecies.Scale(scale);
-        }
-
-        public void TranslateGeo(double x, double y, double z) {
-            vertecies.Translate(x, y, z);
+        public override void SetColor(double[] color) {
+            this.color = color;
         }
 
         /// <summary>

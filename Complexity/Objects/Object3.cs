@@ -10,7 +10,7 @@ using Complexity.Util;
 
 namespace Complexity.Objects {
     /// <summary>
-    /// Represent a 3 Dimentional Object that can be rendered.
+    /// Represents a 3 Dimentional Object that can be rendered.
     /// SimpleObject -> Does not recalculate, must be modified externally.
     /// ComplexObject -> Has a Recalculate method and can update itself
     /// </summary>
@@ -41,6 +41,16 @@ namespace Complexity.Objects {
         /// </summary>
         protected virtual void Init() {
         }
+
+        public void ScaleGeo(double scale) {
+            vertecies.Scale(scale);
+        }
+
+        public void TranslateGeo(double x, double y, double z) {
+            vertecies.Translate(x, y, z);
+        }
+
+        public abstract void SetColor(double[] color);
 
         /// <summary>
         /// 

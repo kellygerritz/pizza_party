@@ -16,6 +16,7 @@ namespace Complexity.Objects {
             public SysVertex(float x, float y, float z)
                 : base(x, y, z) { }
             public Object3 obj;
+            public float distance;
 
             public SysVertex Clone() {
                 return (SysVertex)MemberwiseClone();
@@ -48,6 +49,7 @@ namespace Complexity.Objects {
                     (float)_geometry[1, i],
                     (float)_geometry[2, i]);
                 sysVert.obj = (Object3)masterObj.Clone();
+                sysVert.distance = i;
                 _vertecies.Add(sysVert);
             }
 
@@ -63,6 +65,12 @@ namespace Complexity.Objects {
 
             foreach (SysVertex vert in vertecies) {
                 vert.obj.Recalculate();
+
+                //Set
+                vert.obj.Recalculate();
+                vert.obj.SetColor(color.Values());
+                vert.obj.ScaleGeo(scale.Eval());
+                vert.obj.TranslateGeo(vert.x, vert.y, vert.z);
             }
 
             UpdateClones();

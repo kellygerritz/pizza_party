@@ -39,6 +39,13 @@ namespace Complexity {
         }
 
         /// <summary>
+        /// Removes all objects from the scene
+        /// </summary>
+        public void Clear() {
+            objects.Clear();
+        }
+
+        /// <summary>
         /// Recalculate the properties of all objects in the scene
         /// </summary>
         public void Recalculate() {
