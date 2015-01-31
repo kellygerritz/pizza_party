@@ -38,6 +38,8 @@ namespace Complexity {
                     { 0, 0,  0 }
                 },
                 dot);
+
+            sys.SetColor(new double[] { 0, 1, 1, 1});
             
             Pen3 pen = new Pen3(GeometryBuilder.Circle(60));
             pen.SetAttributes(new Dictionary<string, string> {
@@ -57,7 +59,7 @@ namespace Complexity {
             Universe u = new Universe();
             u.AddScene(scene);
             u.SetActiveScene(0);
-            //u.Begin();
+            u.Begin();
             Console.WriteLine("Done.");
 
             //Test expr, ( 1 + 2 ) * ( 3 / 4 ) ^ ( 5 + 6 ) = 0.1267

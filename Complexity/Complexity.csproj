@@ -46,6 +46,7 @@
     <Compile Include="Objects\Renderable.cs" />
     <Compile Include="Objects\Compound Objects\System3.cs" />
     <Compile Include="Math_Things\ExpressionD.cs" />
+    <Compile Include="Util\CloneableStack.cs" />
     <Compile Include="Util\GeometryBuilder.cs" />
     <Compile Include="Util\Global.cs" />
     <Compile Include="Main\MainClass.cs" />
@@ -76,6 +77,9 @@
     </Reference>
     <Reference Include="MathNet.Symbolics">
       <HintPath>..\packages\MathNet.Symbolics.0.4.0\lib\net40\MathNet.Symbolics.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\Libraries\Open TK 1.1\Binaries\OpenTK\Release\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
