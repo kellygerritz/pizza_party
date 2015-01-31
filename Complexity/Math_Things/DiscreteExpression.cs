@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Complexity.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,7 +124,7 @@ namespace Complexity.Math_Things {
         /// <returns></returns>
         public CloneableStack<Symbol> InfixToRPN(string[] inputTokens) {
             //ArrayList outList = new ArrayList();
-            CloneableStack<Symbol> result = new CloneableStack<Symbol>();
+            CloneableStack<Symbol> result = new CloneableStack<Symbol>(0);
             Stack<string> stack = new Stack<string>();
 
             //for all the input tokens read the next token
@@ -156,8 +157,8 @@ namespace Complexity.Math_Things {
                 result.Push(ToSymbol(stack.Pop()));
             }
 
-            CloneableStack<Symbol> actualResult = new CloneableStack<Symbol>();
-            while (result.Count > 0) {
+            CloneableStack<Symbol> actualResult = new CloneableStack<Symbol>(result.Count());
+            while (result.Count() > 0) {
                 actualResult.Push(result.Pop());
             }
             return actualResult;
@@ -245,11 +246,11 @@ namespace Complexity.Math_Things {
         /// <returns>The result of evaluation</returns>
         public double Evaluate() {
             //Create a clone of expression because we don't want to mess with it
-            Stack<Symbol> expr = expression.Clone();
+            CloneableStack<Symbol> expr = expression.Clone();
             Stack<Symbol> tempStack = new Stack<Symbol>();
             double[] values;
 
-            while (expr.Count > 0) {
+            while (expr.Count() > 0) {
                 if (!expr.Peek().isOperator) {
                     tempStack.Push(expr.Pop());
                 } else {
@@ -304,11 +305,5 @@ namespace Complexity.Math_Things {
         }
 
         public delegate double Eval(double[] args);
-    }
-
-    public class CloneableStack<T> : Stack<T> {
-        public Stack<T> Clone() {
-            return (Stack<T>)MemberwiseClone();
-        }
     }
 }

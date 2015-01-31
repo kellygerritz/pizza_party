@@ -62,17 +62,14 @@ namespace Complexity {
             u.Begin();
             Console.WriteLine("Done.");
 
-            //Test expr, ( 1 + 2 ) * ( 3 / 4 ) ^ ( 5 + 6 ) = 0.1267
-            DiscreteExpr expr = new DiscreteExpr("sin(e)^2 + cos(e)^2");
+            DiscreteExpr expr = new DiscreteExpr("time");
             Console.WriteLine("Expr value: " + expr.Evaluate());
 
-            //Testing if moved correctly to other comp
-
             while (true) {
-                //Console.WriteLine(expr.Evaluate());
+                Console.WriteLine("Expr value: " + expr.Evaluate());
                 Console.ReadLine();
             }
-                return 0;
+            return 0;
         }
     }
 }
