@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using Complexity.Math_Things;
 
 namespace Complexity.Util {
     /// <summary>
@@ -307,7 +308,7 @@ namespace Complexity.Util {
         public void Recalculate() {
             values = new VectorD(expressions.Length);
             for (int i = 0; i < expressions.Length; i++) {
-                values.At(i, expressions[i].Eval());
+                values.At(i, expressions[i].Evaluate());
             }
         }
 

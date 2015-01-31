@@ -1,4 +1,5 @@
-﻿using Complexity.Util;
+﻿using Complexity.Math_Things;
+using Complexity.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;

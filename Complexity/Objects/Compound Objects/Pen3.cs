@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using Complexity.Math_Things;
 
 namespace Complexity.Objects {
     /// <summary>
@@ -43,10 +44,10 @@ namespace Complexity.Objects {
             //base.Recalculate();
 
             //Setup expression values
-            ExpressionD.AddSymbol("dist", new SymbolD("dist", () => 0));
-            ExpressionD.AddSymbol("xslope", new SymbolD("xslope", () => 0));
-            ExpressionD.AddSymbol("yslope", new SymbolD("yslope", () => 0));
-            ExpressionD.AddSymbol("zslope", new SymbolD("zslope", () => 0));
+            ExpressionD.AddSymbol("dist", 0);
+            ExpressionD.AddSymbol("xslope", 0);
+            ExpressionD.AddSymbol("yslope", 0);
+            ExpressionD.AddSymbol("zslope", 0);
 
             //Set the properties of the child objects
             foreach (PenVertex penVert in vertecies) {
@@ -62,7 +63,7 @@ namespace Complexity.Objects {
                 //Set
                 ((SimpleObject3)penVert.obj).Recalculate();
                 ((SimpleObject3)penVert.obj).SetColor(color.Values());
-                ((SimpleObject3)penVert.obj).ScaleGeo(scale.Eval());
+                ((SimpleObject3)penVert.obj).ScaleGeo(scale.Evaluate());
                 ((SimpleObject3)penVert.obj).TranslateGeo(penVert.x, penVert.y, penVert.z);
             }
 
@@ -76,7 +77,7 @@ namespace Complexity.Objects {
         public override void Draw() {
             foreach (PenVertex penVert in vertecies) {
                 if (speed >= 0) {
-                    if (penVert.distance >= speed * ExpressionD.GetValue("time")) {
+                    if (penVert.distance >= speed * ExpressionD.GetSymbolValue("time")) {
                         penVert.obj.Draw();
                     } else {
                         vertecies.Reset();

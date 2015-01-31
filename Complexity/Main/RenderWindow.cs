@@ -69,7 +69,7 @@ namespace Complexity.Main {
             //This should be modified so that everything is calculated to a buffer
             //That could be done on a separate thread, then, when that's over
             //we can swap buffers after rendering
-            ExpressionD.Recalculate();
+            //ExpressionD.Recalculate();
             renderScene.Recalculate();
 
             //Draw the scene

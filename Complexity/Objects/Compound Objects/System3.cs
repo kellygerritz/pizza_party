@@ -69,7 +69,7 @@ namespace Complexity.Objects {
                 //Set
                 vert.obj.Recalculate();
                 vert.obj.SetColor(color.Values());
-                vert.obj.ScaleGeo(scale.Eval());
+                vert.obj.ScaleGeo(scale.Evaluate());
                 vert.obj.TranslateGeo(vert.x, vert.y, vert.z);
             }
 
