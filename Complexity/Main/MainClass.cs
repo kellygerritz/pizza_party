@@ -64,6 +64,8 @@ namespace Complexity {
             DiscreteExpr expr = new DiscreteExpr("sin(e)^2 + cos(e)^2");
             Console.WriteLine("Expr value: " + expr.Evaluate());
 
+            //Testing if moved correctly to other comp
+
             while (true) {
                 //Console.WriteLine(expr.Evaluate());
                 Console.ReadLine();
