@@ -19,8 +19,9 @@ namespace Complexity.Objects {
          * maxDist = maximum allowed distance between dots
          * speed = speed at which the pen is drawn, < 0 for instant
          */
-        private double maxDist = 0.02;
-        private float speed = -1;
+        private float maxDist = 0.02f;
+        private float speed = 1;
+        private float length = 0;
 
         //Pen verticies have a few more properties than a regular vertex
         protected class PenVertex : SysVertex {
@@ -40,11 +41,24 @@ namespace Complexity.Objects {
             ConvertGeometry(geometry);
         }
 
+        public override void SetAttributes(Dictionary<string, string> args) {
+            base.SetAttributes(args);
+
+            if (args.ContainsKey("speed")) {
+                try {
+                    speed = float.Parse(args["speed"]);
+                } catch (Exception ex) {
+                    Console.WriteLine("Pen.SetAttributes : Invalid speed");
+                }
+            }
+        }
+
         public override void Recalculate() {
             //base.Recalculate();
 
             //Setup expression values
             ExpressionD.AddSymbol("dist", 0);
+            ExpressionD.AddSymbol("length", length);
             ExpressionD.AddSymbol("xslope", 0);
             ExpressionD.AddSymbol("yslope", 0);
             ExpressionD.AddSymbol("zslope", 0);
@@ -69,6 +83,7 @@ namespace Complexity.Objects {
 
             //Remove them as the program leaves scope
             ExpressionD.RemoveSymbol("dist");
+            ExpressionD.RemoveSymbol("length");
             ExpressionD.RemoveSymbol("xslope");
             ExpressionD.RemoveSymbol("yslope");
             ExpressionD.RemoveSymbol("zslope");
@@ -76,8 +91,10 @@ namespace Complexity.Objects {
 
         public override void Draw() {
             foreach (PenVertex penVert in vertecies) {
+                double dist = speed * ExpressionD.GetSymbolValue("time");
+                double sdfs = penVert.distance;
                 if (speed >= 0) {
-                    if (penVert.distance >= speed * ExpressionD.GetSymbolValue("time")) {
+                    if (penVert.distance < dist) {
                         penVert.obj.Draw();
                     } else {
                         vertecies.Reset();
@@ -142,10 +159,18 @@ namespace Complexity.Objects {
 
                 _point = new PenVertex((float)g[0, i], (float)g[1, i], (float)g[2, i]);
                 _point.obj = (Object3)masterObj.Clone();
-                _point.distance = ((PenVertex)_points.Last()).distance + ((float)maxDist);
+
+                //calculate distance
+                if (_points.Count() > 0) {
+                    _point.distance = ((PenVertex)_points.Last()).distance + ((float)maxDist);
+                } else {
+                    _point.distance = 0;
+                }
                 _point.slope = slope;
                 _points.Add(_point);
             }
+
+            length = (_points.Count() > 0) ? ((PenVertex)_points.Last()).distance : 0;
 
             vertecies = new PointMatrix(_points);
         }

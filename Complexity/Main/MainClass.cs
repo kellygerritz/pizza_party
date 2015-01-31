@@ -41,13 +41,17 @@ namespace Complexity {
 
             sys.SetColor(new double[] { 0, 1, 1, 1});
             
-            Pen3 pen = new Pen3(GeometryBuilder.Circle(60));
+            //Pen3 pen = new Pen3(GeometryBuilder.Circle(60));
+            Pen3 pen = new Pen3(GeometryBuilder.GraphPolar(new ExpressionD("sin(2*i)*2"), 0, 360, 2));
+            pen.SetAttributes(new Dictionary<string, string> {
+                {"speed", "2"}
+            });
             //sin(time+dist/3)/2
             pen.SetAttributes(new Dictionary<string, string> {
                 {"scale", ".05"},
-                {"rcolor", "sin(dist + time)"},
-                {"bcolor", "sin(dist*0.9 + time)"},
-                {"gcolor", "0"}
+                {"rcolor", "sin(time + dist/length)"},
+                {"bcolor", "sin(time + dist/length + 2/3*pi)"},
+                {"gcolor", "sin(time + dist/length + 4/3*pi)"}
             });
             Scene scene = new Scene();
             scene.Add(pen);
