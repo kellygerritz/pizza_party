@@ -14,10 +14,21 @@ namespace Complexity.Objects {
     /// </summary>
     public class ComplexCube : ComplexObject3 {
         protected byte[] triangles;
+        protected double[] geometry;
+        protected double[] colors;
 
         public ComplexCube() {
             ConvertGeometry(GeometryBuilder.Cube());
             originalGeo = MatrixD.OfArray(GeometryBuilder.Cube());
+
+            vertecies = new PointMatrix(originalGeo.ToArray());
+            geometry = vertecies.ToColumnWiseArray();
+            colors = new double[geometry.Length];
+            for (int i = 0; i < colors.Length; i+=3) {
+                colors[i] = 1;
+                colors[i + 1] = 0;
+                colors[i + 2] = 1;
+            }
         }
 
         /// <summary>
@@ -44,15 +55,15 @@ namespace Complexity.Objects {
 
         public override void Recalculate() {
             base.Recalculate();
+
+            geometry = vertecies.ToColumnWiseArray();
         }
 
         public override void Draw() {
-            /*
-            GL.Color4(color.Values());
+            //GL.Color4(color.Values());
             GL.VertexPointer(3, VertexPointerType.Double, 0, vertecies.ToColumnWiseArray());
-            GL.ColorPointer(4, ColorPointerType.Double, 0, color.Values());
+            GL.ColorPointer(3, ColorPointerType.Double, 0, colors);
             GL.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedByte, triangles);
-            */
         }
     }
 }

@@ -55,6 +55,7 @@ namespace Complexity {
             });
             Scene scene = new Scene();
             scene.Add(pen);
+            scene.Add(cube);
             //scene.Add(sys);
 
             Console.WriteLine("Done.");

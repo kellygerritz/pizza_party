@@ -43,15 +43,14 @@ namespace Complexity.Objects {
             color.Recalculate();
 
             //Transform geometry matrix
-            // = new MatrixD(geo.RowCount, geo.ColumnCount)
-            MatrixD _geo;
-            _geo = MatrixD.TranslateMatrix(origin.values, originalGeo);
-            //_geo = MatrixD.ScaleMatrix(scale.Eval(), _geo);
-            _geo = MatrixD.RotateMatrix(rot.values, _geo);
-            _geo = MatrixD.TranslateMatrix(position[0], position[1], position[2], _geo);
-            _geo = MatrixD.TranslateMatrix(trans.values, _geo);
+            vertecies.SetFromMatrix(originalGeo);
+            vertecies.Translate(origin.values);
+            vertecies.Scale(scale.Evaluate());
+            vertecies.Rotate(rot.values);
+            vertecies.Translate(position[0], position[1], position[2]);
+            vertecies.Translate(trans.values);
 
-            //geometry = _geo.ToColumnWiseArray();
+            //vertecies = new _geo.ToColumnWiseArray();
 
             //Transform color matrix
             //MatrixD _col;

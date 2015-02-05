@@ -45,6 +45,45 @@ namespace Complexity.Util {
         #region Static
 
         /// <summary>
+        /// Create a matrix to rotate a geometry of 3D points about the x axis
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        private static Matrix<double> RotX(double x) {
+            return DenseMatrix.OfArray(new Double[,] {
+                {1, 0, 0},
+                {0, Math.Cos(x), -Math.Sin(x)},
+                {0, Math.Sin(x), Math.Cos(x)}
+            });
+        }
+
+        /// <summary>
+        /// Create a matrix to rotate a geometry of 3D points about the y axis
+        /// </summary>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        private static Matrix<double> RotY(double y) {
+            return DenseMatrix.OfArray(new Double[,] {
+                {Math.Cos(y), 0, Math.Sin(y)},
+                {0, 1, 0},
+                {-Math.Sin(y), 0, Math.Cos(y)}
+            });
+        }
+
+        /// <summary>
+        /// Create a matrix to rotate a geometry of 3D points about the z axis
+        /// </summary>
+        /// <param name="z"></param>
+        /// <returns></returns>
+        private static Matrix<double> RotZ(double z) {
+           return DenseMatrix.OfArray(new Double[,] {
+                {Math.Cos(z), -Math.Sin(z), 0},
+                {Math.Sin(z), Math.Cos(z), 0},
+                {0, 0, 1}
+            });
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="data"></param>
@@ -63,27 +102,7 @@ namespace Complexity.Util {
         /// <param name="A"></param>
         /// <returns></returns>
         public static MatrixD RotateMatrix(double x, double y, double z, MatrixD A) {
-            //Prepare rotational matricies
-            Matrix<double> rotX = DenseMatrix.OfArray(new Double[,] {
-                {1, 0, 0},
-                {0, Math.Cos(x), -Math.Sin(x)},
-                {0, Math.Sin(x), Math.Cos(x)}
-            });
-
-            Matrix<double> rotY = DenseMatrix.OfArray(new Double[,] {
-                {Math.Cos(y), 0, Math.Sin(y)},
-                {0, 1, 0},
-                {-Math.Sin(y), 0, Math.Cos(y)}
-            });
-
-            Matrix<double> rotZ = DenseMatrix.OfArray(new Double[,] {
-                {Math.Cos(z), -Math.Sin(z), 0},
-                {Math.Sin(z), Math.Cos(z), 0},
-                {0, 0, 1}
-            });
-
-            //Rotate
-            MatrixD result = ConvertMatrix((DenseMatrix) (rotX * rotY * rotZ * A));
+            MatrixD result = ConvertMatrix((DenseMatrix) (RotX(x) * RotY(y) * RotZ(z) * A));
             return result;
         }
 
@@ -252,6 +271,10 @@ namespace Complexity.Util {
                 trans.SetRow(i, Vector<double>.Build.Dense(ColumnCount, vec.At(i)));
             }
             SetSubMatrix(0, 0, trans + this);
+        }
+
+        public void Rotate(VectorD rot) {
+            //this * RotX(5);
         }
 
         #endregion
